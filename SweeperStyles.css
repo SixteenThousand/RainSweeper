@@ -1,0 +1,11 @@
+body {
+	background: cyan;
+	/* background: url("../assets/Sweeper_Background.jpg"); */
+}
+
+header {
+	text-align: center;
+	font-size: 4rem;
+	color: yellow;
+	font-family: tahoma;
+}

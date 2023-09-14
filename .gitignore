@@ -1,0 +1,10 @@
+# note the assets folder will be added to the git repo once the images have been properly edited,
+# to reduce the eventual git repo size
+# ditto for the dist folder
+assets/*
+assets/**/*
+dist/*
+yonacommitmsg.txt
+*.yona
+**/jaeha.*
+jaeha.*
