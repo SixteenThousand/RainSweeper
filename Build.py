@@ -8,4 +8,3 @@ def bundle(mode):
 
 
 bundle("development")
-print("Game built!")

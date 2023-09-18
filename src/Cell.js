@@ -32,7 +32,6 @@ function toAttribute(num) {
 	return Math.round(num).toString();
 }
 
-
 function hlPoint(svgcanvas,x,y,colour) {
 	// highlights a given point in a given SVG element
 	// for debugging purposes only
@@ -43,6 +42,7 @@ function hlPoint(svgcanvas,x,y,colour) {
 	dot.setAttribute("fill",colour);
 	svgcanvas.appendChild(dot);
 }
+
 
 class RegularCell {
 	constructor(svgcanvas,x,y,angle,numSides,side) {
@@ -73,9 +73,6 @@ class RegularCell {
 		}
 		shape.setAttribute("points",vertices);
 		shape.setAttribute("fill",DEFAULT_COLOUR);
-		
-		shape.setAttribute("stroke","#00FFFF");
-		shape.setAttribute("stroke-width",(side*0.05).toString());
 		
 		this.shape = shape;
 		// attributes assigned by parameters

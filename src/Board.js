@@ -1,9 +1,13 @@
 import cellpkg from "./Cell.js";
 
 const SVGNS = "http://www.w3.org/2000/svg";
-const ADJ_TOL = 0.1;
+const ADJ_TOL = 0.15;
 	// the tolerance for two vertices of different cells to be considered
-	// "approximately the same", divided by the side length of a cell
+	// "approximately the same", divided by the side length of the bounding
+	// shape of a cell
+const CELL_PADDING = ADJ_TOL * 0.25;
+	// the maximum distance between the actual cell border and the bounding 
+	// shape, divided by the side length of the bounding shape
 
 
 class CellGroup {
@@ -14,22 +18,23 @@ class CellGroup {
 			- determining which cells are adjacnent to each other
 	*/
 	
-	constructor(cellsInfo,dx,dy,padding) {
+	constructor(cellsInfo,dx,dy,groupPadding) {
 		/*
 			++++++++++++ parameters ++++++++++++
 			(Number/int[][]) cellsInfo: information about each cell in the
-				group. Specifically, each entry in the array is itself an
-				array containing:
-					- the x-coord of the top-leftmost vertex
-					- the y-coord of the top-leftmost vertex
-					- the angle the baseline of the cell makes with the horizontal
-					- the number of sides of the cell
+				group. Specifically, each entry in the array is an object with 
+				properties:
+					- x: the x-coord of the top-leftmost vertex of the bounding shape
+					- y: the y-coord of the top-leftmost vertex of the bounding shape
+					- angle: the angle the baseline of the bounding shape makes with the 
+						horizontal
+					- numSides: the number of sides of the cell
 				in that order.
 				Note that the coordinates are measured relative to the
 				coordinates of the top-leftmost vertex of the top-leftmost
-				cell in the group, and in units of the side length of each cell
-				Also note that cells must be positioned to be adjacent to each
-				other, without padding.
+				cell in the group, and in units of the side length of each cell.
+				The "bounding shape" here is just a slightly larger copy of the cell
+				shape used to give some padding between cells.
 			(Number) dx,dy: the difference in x/y-coordinates between
 				the top-leftmost and bottom-rightmost vertices of the cells
 				when rendered
@@ -41,27 +46,35 @@ class CellGroup {
 		this.numCells = cellsInfo.length;
 		this.dx = dx;
 		this.dy = dy;
-		this.padding = padding;
+		this.groupPadding = groupPadding;
 	}
 	
-	draw(svgcanvas,x,y,side) {
+	draw(svgcanvas,x,y,boundSide) {
 		/*
 			creates a copy of the cells that this CellGroup represents in
 			the given svg element at given coordinates
 			(svg element) svgcanvas: the svg element
 			(Number/int) x,y: the coordinates of the top-leftmost vertex of the
 				top-leftmost cell in this CellGroup
-			(Number) side: the side-length of each cell
+			(Number) boundSide: the boundSide-length of the bounding shape of each cell
 		*/
 		let cells = [];
+		let tmpAngle;
 		for(let info of this.cellsInfo) {
+			tmpAngle = 0.5*Math.PI*(1-(1/info.numSides));
 			cells[cells.length] = new cellpkg.RegularCell(
 				svgcanvas,
-				x+side*info[0],
-				y+side*info[1],
-				info[2],
-				info[3],
-				side
+				x + boundSide * (
+					info.x + 
+					CELL_PADDING*Math.cos(tmpAngle)
+				),
+				y + boundSide * (
+					info.y +
+					CELL_PADDING*Math.sin(tmpAngle)
+				),
+				info.angle,
+				info.numSides,
+				boundSide - 2*boundSide*CELL_PADDING*Math.cos(tmpAngle)
 			);
 		}
 		return cells;
@@ -82,8 +95,8 @@ class Board {
 		this.cells = [];
 		this.side = side;
 		this.numCellsInGroup = groupType.numCells;
-		let x0 = groupType.padding * side;
-		let y0 = groupType.padding * side;
+		let x0 = groupType.groupPadding * side;
+		let y0 = groupType.groupPadding * side;
 		for(let i=0; i<numRows; ++i) {
 			for(let j=0;j<numCols;++j) {
 				this.cells = this.cells.concat(
