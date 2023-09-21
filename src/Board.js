@@ -1,13 +1,10 @@
 import cellpkg from "./Cell.js";
 
 const SVGNS = "http://www.w3.org/2000/svg";
-const ADJ_TOL = 0.15;
+const ADJ_TOL = 0.4;
 	// the tolerance for two vertices of different cells to be considered
 	// "approximately the same", divided by the side length of the bounding
 	// shape of a cell
-const CELL_PADDING = ADJ_TOL * 0.25;
-	// the maximum distance between the actual cell border and the bounding 
-	// shape, divided by the side length of the bounding shape
 
 
 class CellGroup {
@@ -33,12 +30,10 @@ class CellGroup {
 				Note that the coordinates are measured relative to the
 				coordinates of the top-leftmost vertex of the top-leftmost
 				cell in the group, and in units of the side length of each cell.
-				The "bounding shape" here is just a slightly larger copy of the cell
-				shape used to give some padding between cells.
 			(Number) dx,dy: the difference in x/y-coordinates between
 				the top-leftmost and bottom-rightmost vertices of the cells
 				when rendered
-			(Number) padding: dx,dy above define a rectangle used to position
+			(Number) groupPadding: dx,dy above define a rectangle used to position
 				the cell group. padding is the padding need around this rectangle
 				needed to fit all of the cell shapes onto a screen
 		*/
@@ -61,20 +56,14 @@ class CellGroup {
 		let cells = [];
 		let tmpAngle;
 		for(let info of this.cellsInfo) {
-			tmpAngle = 0.5*Math.PI*(1-(1/info.numSides));
+			tmpAngle = Math.PI*(0.5-(1/info.numSides));
 			cells[cells.length] = new cellpkg.RegularCell(
 				svgcanvas,
-				x + boundSide * (
-					info.x + 
-					CELL_PADDING*Math.cos(tmpAngle)
-				),
-				y + boundSide * (
-					info.y +
-					CELL_PADDING*Math.sin(tmpAngle)
-				),
+				x + boundSide * info.x,
+				y + boundSide * info.y,
 				info.angle,
 				info.numSides,
-				boundSide - 2*boundSide*CELL_PADDING*Math.cos(tmpAngle)
+				boundSide
 			);
 		}
 		return cells;
@@ -110,6 +99,12 @@ class Board {
 			}
 		}
 		
+		this.height = 
+			side * (
+				groupType.dy * numRows +
+				groupType.groupPadding * 2
+			);
+		
 		// dealing with the first click
 		document.addEventListener("click",
 			event => {
@@ -119,7 +114,7 @@ class Board {
 				// so it doesn't become a bomb
 				let firstCellIndex = 0;
 				while(firstCellIndex < cellIndices.length &&
-					this.cells[firstCellIndex].getShape() !== event.target) {
+					this.cells[firstCellIndex].cellShape !== event.target) {
 					++firstCellIndex;
 				}
 				cellIndices.splice(firstCellIndex,1);
@@ -170,8 +165,8 @@ class Board {
 		if(Math.abs(row1-row2) > 1 || Math.abs(col1-col2) > 1) {
 			return false;
 		}
-		let vertices1 = this.cells[index1].getShape().getAttribute("points").split(" ");
-		let vertices2 = this.cells[index2].getShape().getAttribute("points").split(" ");
+		let vertices1 = this.cells[index1].cellShape.getAttribute("points").split(" ");
+		let vertices2 = this.cells[index2].cellShape.getAttribute("points").split(" ");
 		for(let i=0; i<vertices1.length; ++i) {
 			for(let j=0; j<vertices2.length; ++j) {
 				if(this.approxEqual(vertices1[i],vertices2[j]) &&

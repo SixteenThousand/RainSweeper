@@ -15,22 +15,20 @@ const LABEL_COLOURS = [
 const LABEL_FONT = "Helvetica, Arial";
 const SVGNS = "http://www.w3.org/2000/svg";
 const BORDER_CELL_RATIO = 0.1;
+// The side length of the flag (i.e. the triangle part) divided by 
+// twice the distance from the the centre of the cell to one of its sides
 const FLAG_CELL_RATIO = 0.25;
-	// The side length of the flag (i.e. the triangle part) divided by 
-	// twice the distance from the the centre of the cell to one of its sides
 const POLEHEIGHT_FLAG_RATIO = 3;
 const POLEWIDTH_FLAG_RATIO = 0.15;
 const FLAG_COLOUR = "red";
 const FLAGPOLE_COLOUR = "black";
+// the ratio of the font size to the cell side length
 const FONT_CELL_RATIO = 0.5;
-	// the ratio of the font size to the cell side length
+// 	the padding to be put around each cell
+// (as a fraction of the bounding shape's side length
+const PADDING = 0.15;
 
 
-function toAttribute(num) {
-	// rounds a number and converts it to a string;
-	// for use in defining integer attribute in elements
-	return Math.round(num).toString();
-}
 
 function hlPoint(svgcanvas,x,y,colour) {
 	// highlights a given point in a given SVG element
@@ -43,9 +41,12 @@ function hlPoint(svgcanvas,x,y,colour) {
 	svgcanvas.appendChild(dot);
 }
 
+function regularPoly(x,y,angle,numSides,side) {
+	
+
 
 class RegularCell {
-	constructor(svgcanvas,x,y,angle,numSides,side) {
+	constructor(svgcanvas,x,y,angle,numSides,boundSide) {
 		/*
 			(Reference to SVG element) svgcanvas: the svg element the cell
 				will be drawn in
@@ -57,36 +58,36 @@ class RegularCell {
 				first side fo the polygon to be drawn) makes with the horizontal
 			(Number/int) numSides: the number of sides of the polygon representing
 				the cell
-			(Number) side: the side length of the polygon representing 
-				the cell
+			(Number) boundSide: the side length of the "bounding shape" of the cell
+				The "bounding shape" here is just a slightly larger copy of the cell
+				shape used to give some padding between cells.
 		*/
 		// ++++++++++++ creating the actual cell shape ++++++++++++
-		let shape = document.createElementNS(SVGNS,"polygon");
+		let boundShape = document.createElementNS(SVGNS,"polygon");
+		let cellShape = document.createElementNS(SVGNS,"poygon");
 		let tmpx = x, tmpy = y;
 		let vertices = "";
 		for(let i=0; i<numSides; ++i) {
 			vertices += `${tmpx},${tmpy}`;
 			if(i<numSides-1)
 				vertices += " ";
-			tmpx += side*Math.cos(angle + i*2*Math.PI/numSides);
-			tmpy += side*Math.sin(angle + i*2*Math.PI/numSides);
+			tmpx += boundSide*Math.cos(angle + i*2*Math.PI/numSides);
+			tmpy += boundSide*Math.sin(angle + i*2*Math.PI/numSides);
 		}
-		shape.setAttribute("points",vertices);
-		shape.setAttribute("fill",DEFAULT_COLOUR);
+		boundShape.setAttribute("points",vertices);
+		boundShape.setAttribute("fill",DEFAULT_COLOUR);
 		
-		this.shape = shape;
-		// attributes assigned by parameters
-		this.x = x;
-		this.y = y;
-		this.side = side;
+		this.boundShape = boundShape;
+		this.cellShape = cellShape;
+		this.boundSide = boundSide;
+		this.cellSide = cellSide;
 		this.svgcanvas = svgcanvas;
-			// attribute not assigned by parameters
 		
 		// ++++++++++++ centre of the cell ++++++++++++
 		// (for postioning the flag/number of adjacent bombs) 
-		this.centreX = x + (side * Math.sin(Math.PI/numSides - angle)) /
+		this.centreX = x + (boundSide * Math.sin(Math.PI/numSides - angle)) /
 			(2 * Math.sin(Math.PI/numSides));
-		this.centreY = y + (side * Math.cos(Math.PI/numSides - angle)) /
+		this.centreY = y + (boundSide * Math.cos(Math.PI/numSides - angle)) /
 			(2 * Math.sin(Math.PI/numSides));
 		
 		// ++++++++++++ Cell Properties (to be reset later) ++++++++++++
@@ -94,19 +95,33 @@ class RegularCell {
 		this.numAdjBombs = 0;
 		this.isRevealed = false;
 		this.isFlagged = false;
-			// indicates whether the player has flagged this cell as a bomb
-				// or not
 		
-		// ++++++++++++ creating the flag (to be displayed later) +++++++++++
-		this.flag = document.createElementNS(SVGNS,"polygon");
+		createFlag();
+		
+		// ++++++++++++ add event listeners ++++++++++++
+		this.cellShape.addEventListener("click",
+			event => {
+				if(event.button === 0) {
+					this.reveal();
+				}
+			}
+		);
+		this.cellShape.addEventListener("contextmenu",
+			event => {
+				event.preventDefault();
+				this.toggleFlag();
+			}
+		);
+		
+		// ++++++++++++ add this cell to the svg element ++++++++++++
+		svgcanvas.appendChild(this.boundShape);
+		svgcanvas.appendChild(this.cellShape);
+		svgcanvas.appendChild(this.flagpole);
+		svgcanvas.appendChild(this.flag);
+	}
+	
+	createFlag() {
 		this.flagpole = document.createElementNS(SVGNS,"rect");
-		let flagSide;
-		if(numSides == 4) {
-			flagSide = FLAG_CELL_RATIO * 0.5*side;
-		} else {
-			flagSide = FLAG_CELL_RATIO * side/Math.tan(Math.PI/numSides);
-		}
-		
 		this.flagpole.setAttribute("x",
 			(this.centreX - 0.5*flagSide*POLEWIDTH_FLAG_RATIO).toString());
 		this.flagpole.setAttribute("y",
@@ -117,6 +132,12 @@ class RegularCell {
 			(flagSide*POLEHEIGHT_FLAG_RATIO).toString());
 		this.flagpole.setAttribute("fill","transparent");
 		
+		this.flag = document.createElementNS(SVGNS,"polygon");
+		let flagSide;
+		if(numSides == 4)
+			flagSide = FLAG_CELL_RATIO * 0.5*this.side;
+		else
+			flagSide = FLAG_CELL_RATIO * this.side/Math.tan(Math.PI/numSides);
 		let poleTopRightX = this.centreX + 0.5*flagSide*POLEWIDTH_FLAG_RATIO;
 		let poleTopRightY = this.centreY - 0.5*flagSide*POLEHEIGHT_FLAG_RATIO;
 		this.flag.setAttribute("points",
@@ -127,30 +148,6 @@ class RegularCell {
 			)
 		);
 		this.flag.setAttribute("fill","transparent");
-		
-		// ++++++++++++ add event listeners ++++++++++++
-		this.shape.addEventListener("click",
-			event => {
-				if(event.button === 0) {
-					this.reveal();
-				}
-			}
-		);
-		this.shape.addEventListener("contextmenu",
-			event => {
-				event.preventDefault();
-				this.toggleFlag();
-			}
-		);
-		
-		// ++++++++++++ add this cell to the svg element ++++++++++++
-		svgcanvas.appendChild(this.shape);
-		svgcanvas.appendChild(this.flagpole);
-		svgcanvas.appendChild(this.flag);
-	}
-	
-	getShape() {
-		return this.shape;
 	}
 	
 	setBomb() {
@@ -178,7 +175,7 @@ class RegularCell {
 		}
 		this.isRevealed = true;
 		if(this.isBomb) {
-			this.shape.setAttribute("fill","purple");
+			this.cellShape.setAttribute("fill","purple");
 			console.log("bomb functionailty not built!");
 		} else {
 			let label = document.createElementNS(SVGNS,"text");
