@@ -1,4 +1,5 @@
-const DEFAULT_COLOUR = "white";
+const UNREVEALED_COLOUR = "white";
+const PADDING_COLOUR = "transparent";
 const NO_BOMB_BACKGROUND = "#00ffff";
 const BOMB_BACKGROUND = "#000099";
 const LABEL_COLOURS = [
@@ -14,7 +15,6 @@ const LABEL_COLOURS = [
 ];
 const LABEL_FONT = "Helvetica, Arial";
 const SVGNS = "http://www.w3.org/2000/svg";
-const BORDER_CELL_RATIO = 0.1;
 // The side length of the flag (i.e. the triangle part) divided by 
 // twice the distance from the the centre of the cell to one of its sides
 const FLAG_CELL_RATIO = 0.25;
@@ -26,23 +26,32 @@ const FLAGPOLE_COLOUR = "black";
 const FONT_CELL_RATIO = 0.5;
 // 	the padding to be put around each cell
 // (as a fraction of the bounding shape's side length
-const PADDING = 0.15;
+const PADDING = 0.07;
 
 
-
-function hlPoint(svgcanvas,x,y,colour) {
-	// highlights a given point in a given SVG element
-	// for debugging purposes only
-	let dot = document.createElementNS(SVGNS,"circle");
-	dot.setAttribute("cx",x.toString());
-	dot.setAttribute("cy",y.toString());
-	dot.setAttribute("r","6");
-	dot.setAttribute("fill",colour);
-	svgcanvas.appendChild(dot);
-}
 
 function regularPoly(x,y,angle,numSides,side) {
-	
+	/*
+		returns the coordinates of the veritces of a regular polygon
+			(Number,Number) x,y: the coordinates of one vertex of the
+				polygon
+			(Number) angle: the clockwise angle one side at (x,y) makes
+				with the positive x-axis
+			(Number/Integer) numSides: the number of sides of the polygon
+			(Number) side: the side length of the polygon
+	*/
+	let tmpx = x, tmpy = y;
+	let vertices = "";
+	for(let i=0; i<numSides; ++i) {
+		vertices += `${tmpx},${tmpy}`;
+		if(i<numSides-1)
+			vertices += " ";
+		tmpx += side*Math.cos(angle + i*2*Math.PI/numSides);
+		tmpy += side*Math.sin(angle + i*2*Math.PI/numSides);
+	}
+	return vertices;
+}
+
 
 
 class RegularCell {
@@ -64,23 +73,25 @@ class RegularCell {
 		*/
 		// ++++++++++++ creating the actual cell shape ++++++++++++
 		let boundShape = document.createElementNS(SVGNS,"polygon");
-		let cellShape = document.createElementNS(SVGNS,"poygon");
-		let tmpx = x, tmpy = y;
-		let vertices = "";
-		for(let i=0; i<numSides; ++i) {
-			vertices += `${tmpx},${tmpy}`;
-			if(i<numSides-1)
-				vertices += " ";
-			tmpx += boundSide*Math.cos(angle + i*2*Math.PI/numSides);
-			tmpy += boundSide*Math.sin(angle + i*2*Math.PI/numSides);
-		}
-		boundShape.setAttribute("points",vertices);
-		boundShape.setAttribute("fill",DEFAULT_COLOUR);
+		let cellShape = document.createElementNS(SVGNS,"polygon");
+		
+		this.cellSide = boundSide * (1 - 2*PADDING*Math.sin(Math.PI/numSides));
+		
+		boundShape.setAttribute("points",regularPoly(x,y,angle,numSides,boundSide));
+		cellShape.setAttribute("points",regularPoly(
+			x + boundSide * PADDING * Math.sin(Math.PI/numSides - angle),
+			y + boundSide * PADDING * Math.cos(Math.PI/numSides - angle),
+			angle,
+			numSides,
+			this.cellSide
+		));
+		boundShape.setAttribute("fill",PADDING_COLOUR);
+		cellShape.setAttribute("fill",UNREVEALED_COLOUR);
 		
 		this.boundShape = boundShape;
 		this.cellShape = cellShape;
 		this.boundSide = boundSide;
-		this.cellSide = cellSide;
+		this.numSides = numSides;
 		this.svgcanvas = svgcanvas;
 		
 		// ++++++++++++ centre of the cell ++++++++++++
@@ -96,7 +107,7 @@ class RegularCell {
 		this.isRevealed = false;
 		this.isFlagged = false;
 		
-		createFlag();
+		this.createFlag();
 		
 		// ++++++++++++ add event listeners ++++++++++++
 		this.cellShape.addEventListener("click",
@@ -114,30 +125,19 @@ class RegularCell {
 		);
 		
 		// ++++++++++++ add this cell to the svg element ++++++++++++
-		svgcanvas.appendChild(this.boundShape);
-		svgcanvas.appendChild(this.cellShape);
+		svgcanvas.appendChild(boundShape);
+		svgcanvas.appendChild(cellShape);
 		svgcanvas.appendChild(this.flagpole);
 		svgcanvas.appendChild(this.flag);
 	}
 	
 	createFlag() {
-		this.flagpole = document.createElementNS(SVGNS,"rect");
-		this.flagpole.setAttribute("x",
-			(this.centreX - 0.5*flagSide*POLEWIDTH_FLAG_RATIO).toString());
-		this.flagpole.setAttribute("y",
-			(this.centreY - 0.5*flagSide*POLEHEIGHT_FLAG_RATIO).toString());
-		this.flagpole.setAttribute("width",
-			(flagSide*POLEWIDTH_FLAG_RATIO).toString());
-		this.flagpole.setAttribute("height",
-			(flagSide*POLEHEIGHT_FLAG_RATIO).toString());
-		this.flagpole.setAttribute("fill","transparent");
-		
 		this.flag = document.createElementNS(SVGNS,"polygon");
 		let flagSide;
-		if(numSides == 4)
-			flagSide = FLAG_CELL_RATIO * 0.5*this.side;
+		if(this.numSides == 4)
+			flagSide = FLAG_CELL_RATIO * 0.5*this.cellSide;
 		else
-			flagSide = FLAG_CELL_RATIO * this.side/Math.tan(Math.PI/numSides);
+			flagSide = FLAG_CELL_RATIO * this.cellSide/Math.tan(Math.PI/this.numSides);
 		let poleTopRightX = this.centreX + 0.5*flagSide*POLEWIDTH_FLAG_RATIO;
 		let poleTopRightY = this.centreY - 0.5*flagSide*POLEHEIGHT_FLAG_RATIO;
 		this.flag.setAttribute("points",
@@ -148,6 +148,17 @@ class RegularCell {
 			)
 		);
 		this.flag.setAttribute("fill","transparent");
+		
+		this.flagpole = document.createElementNS(SVGNS,"rect");
+		this.flagpole.setAttribute("x",
+			(this.centreX - 0.5*flagSide*POLEWIDTH_FLAG_RATIO).toString());
+		this.flagpole.setAttribute("y",
+			(this.centreY - 0.5*flagSide*POLEHEIGHT_FLAG_RATIO).toString());
+		this.flagpole.setAttribute("width",
+			(flagSide*POLEWIDTH_FLAG_RATIO).toString());
+		this.flagpole.setAttribute("height",
+			(flagSide*POLEHEIGHT_FLAG_RATIO).toString());
+		this.flagpole.setAttribute("fill","transparent");
 	}
 	
 	setBomb() {
@@ -190,7 +201,7 @@ class RegularCell {
 			label.setAttribute("y",this.centreY.toString());
 			label.setAttribute("text-anchor","middle");
 			label.setAttribute("dominant-baseline","middle");
-			label.setAttribute("font-size",Math.ceil(this.side*FONT_CELL_RATIO).toString());
+			label.setAttribute("font-size",Math.ceil(this.cellSide*FONT_CELL_RATIO).toString());
 			label.setAttribute("font-family",LABEL_FONT);
 			let labelText = document.createTextNode(this.numAdjBombs.toString());
 			label.appendChild(labelText);
@@ -203,7 +214,9 @@ class RegularCell {
 
 const cellpkg = {
 	"SVGNS":SVGNS,
-	"RegularCell": RegularCell,
+	"RegularCell": RegularCell
 }
+
+
 
 export default cellpkg;

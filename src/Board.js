@@ -29,7 +29,8 @@ class CellGroup {
 				in that order.
 				Note that the coordinates are measured relative to the
 				coordinates of the top-leftmost vertex of the top-leftmost
-				cell in the group, and in units of the side length of each cell.
+				cell in the group, and in units of the side length of the bounding shape
+				of a cell.
 			(Number) dx,dy: the difference in x/y-coordinates between
 				the top-leftmost and bottom-rightmost vertices of the cells
 				when rendered
@@ -72,7 +73,7 @@ class CellGroup {
 
 
 class Board {
-	constructor(svgcanvas,side,groupType,numRows,numCols,numBombs) {
+	constructor(svgcanvas,boundSide,groupType,numRows,numCols,numBombs) {
 		/*
 			(CellGroup) groupType: the type of cell group being used to
 				contruct this board
@@ -82,28 +83,31 @@ class Board {
 				placed on the board
 		*/
 		this.cells = [];
-		this.side = side;
+		this.boundSide = boundSide;
 		this.numCellsInGroup = groupType.numCells;
-		let x0 = groupType.groupPadding * side;
-		let y0 = groupType.groupPadding * side;
+		let x0 = groupType.groupPadding * boundSide;
+		let y0 = groupType.groupPadding * boundSide;
 		for(let i=0; i<numRows; ++i) {
 			for(let j=0;j<numCols;++j) {
 				this.cells = this.cells.concat(
 					groupType.draw(
 						svgcanvas,
-						x0+j*groupType.dx*side,
-						y0+i*groupType.dy*side,
-						side
+						x0+j*groupType.dx*boundSide,
+						y0+i*groupType.dy*boundSide,
+						boundSide
 					)
 				);
 			}
 		}
 		
-		this.height = 
-			side * (
-				groupType.dy * numRows +
-				groupType.groupPadding * 2
-			);
+		this.height = boundSide * (
+			groupType.dy * numRows +
+			groupType.groupPadding * 2
+		);
+		this.width = boundSide * (
+			groupType.dx * numCols +
+			groupType.groupPadding * 2
+		);
 		
 		// dealing with the first click
 		document.addEventListener("click",
@@ -143,10 +147,11 @@ class Board {
 	
 	approxEqual(vertex1,vertex2) {
 		// determines whether two given points are the same,
-		// 	up to a tolerance of ADJ_TOL times the side length of a cell
+		// 	up to a tolerance of ADJ_TOL times the side length of the bounding
+		// shape of a cell
 		let [x1,y1] = vertex1.split(",").map(parseFloat);
 		let [x2,y2] = vertex2.split(",").map(parseFloat);
-		return (x1-x2)**2 + (y1-y2)**2 < ADJ_TOL*this.side;
+		return (x1-x2)**2 + (y1-y2)**2 < ADJ_TOL*this.boundSide;
 	}
 	
 	areAdjacent(index1,index2) {
@@ -165,8 +170,8 @@ class Board {
 		if(Math.abs(row1-row2) > 1 || Math.abs(col1-col2) > 1) {
 			return false;
 		}
-		let vertices1 = this.cells[index1].cellShape.getAttribute("points").split(" ");
-		let vertices2 = this.cells[index2].cellShape.getAttribute("points").split(" ");
+		let vertices1 = this.cells[index1].boundShape.getAttribute("points").split(" ");
+		let vertices2 = this.cells[index2].boundShape.getAttribute("points").split(" ");
 		for(let i=0; i<vertices1.length; ++i) {
 			for(let j=0; j<vertices2.length; ++j) {
 				if(this.approxEqual(vertices1[i],vertices2[j]) &&

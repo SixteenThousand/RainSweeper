@@ -39,5 +39,6 @@ const hexStarGroup = new boardpkg.CellGroup(hexStarInfo,2,4*root75,0.6);
 
 
 
-let game = new boardpkg.Board(svgcanvas,100,squareAndOctagon,3,3,15);
+let game = new boardpkg.Board(svgcanvas,100,hexStarGroup,2,3,7);
 svgcanvas.setAttribute("height",game.height.toString());
+svgcanvas.setAttribute("width",game.width.toString());
