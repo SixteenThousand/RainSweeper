@@ -1,7 +1,6 @@
 import cellpkg from "./Cell.js";
 import boardpkg from "./Board.js";
 
-let svgcanvas = document.getElementById("sweepercanvas");
 
 const root2 = Math.sqrt(2);
 const sqOctInfo = [
@@ -37,8 +36,42 @@ const hexStarInfo = [
 ]
 const hexStarGroup = new boardpkg.CellGroup(hexStarInfo,2,4*root75,0.6);
 
+const modes = {
+	"Squares & Octagons": squareAndOctagon,
+	"All Hexagons": hexGroup,
+	"All Triangles": triGroup,
+	"The Six-Pointed Star": hexStarGroup
+};
 
 
-let game = new boardpkg.Board(svgcanvas,100,hexStarGroup,2,3,7);
-svgcanvas.setAttribute("height",game.height.toString());
-svgcanvas.setAttribute("width",game.width.toString());
+
+const svgcanvas = document.getElementById("sweepercanvas");
+const newGameButton = document.getElementById("New-Game");
+const modeSelector = document.getElementById("Mode-Selector");
+
+
+let option;
+let optionName;
+for(const modeName in modes) {
+	option = document.createElement("option");
+	optionName = document.createTextNode(modeName);
+	option.appendChild(optionName);
+	modeSelector.appendChild(option);
+}
+
+
+let game;
+
+function NewGame(mode) {
+	console.log(modeSelector.getAttribute("value"));
+	if(svgcanvas !== null) {
+		for(const child of svgcanvas.children)
+			child.remove();
+	}
+	game = new boardpkg.Board(svgcanvas,100,mode,3,3,9);
+	svgcanvas.setAttribute("height",game.height.toString());
+	svgcanvas.setAttribute("width",game.width.toString());
+}
+
+NewGame(squareAndOctagon);
+newGameButton.addEventListener("click",event => {NewGame(squareAndOctagon);});
