@@ -2,6 +2,10 @@
 import Board from "./Board.js";
 
 const root2 = Math.sqrt(2);
+const root3 = Math.sqrt(3);
+const root75 = Math.sqrt(.75);
+
+
 const sqOctInfo = [
 	{x:0, y:0, angle:0, numSides:8},
 	{x:1+0.5*root2, y:0.5*root2, angle:0, numSides:4},
@@ -10,7 +14,6 @@ const sqOctInfo = [
 ];
 const squareAndOctagon = new Board.CellGroup(sqOctInfo,2+root2,2+root2,1);
 
-const root75 = Math.sqrt(.75);
 const hexInfo = [
 	{x:0, y:0, angle:0, numSides:6},
 	{x:1.5, y:root75, angle:0, numSides:6}
@@ -35,6 +38,41 @@ const hexStarInfo = [
 ]
 const hexStarGroup = new Board.CellGroup(hexStarInfo,2,4*root75,0.6);
 
+const twelvePointInfo = [
+	{x:0, y:0, angle:0.0, numSides:12},
+	{
+		x: (0.5 * (2+root3)),
+		y: (0.5 * (3+2*root3)),
+		angle: 0.0,
+		numSides: 4
+	},
+	{
+		x: (0.5 * (3+root3)),
+		y: (0.5 * (3+root3)),
+		angle: Math.PI/3,
+		numSides: 3
+	},
+	{
+		x: (0.5 * (4+root3)),
+		y: (0.5 * (3+2*root3)),
+		angle: Math.PI/6,
+		numSides: 3
+	},
+	{x: (0.5 * (2+root3)),
+		y: (0.5 * (5+2*root3)),
+		angle: 0.0,
+		numSides: 3
+	},
+	{
+		x: (0.5 * (2+root3)),
+		y: (0.5 * (3+2*root3)),
+		angle: Math.PI/2,
+		numSides: 3
+	},
+];
+const twelvePointGroup = new Board.CellGroup(twelvePointInfo,2+root3,2+root3,1.5);
+
+
 const exports = {
 	"Squares & Octagons": {
 		"groupType":squareAndOctagon,
@@ -51,6 +89,10 @@ const exports = {
 	"The Six-Pointed Star": {
 		"groupType": hexStarGroup,
 		"sizes": [[3,2],[3,3],[4,3],[5,4]]
+	},
+	"The Twelve-Pointed Star": {
+		"groupType": twelvePointGroup,
+		"sizes": [[3,3],[3,5],[5,7],[5,10]]
 	}
 };
 

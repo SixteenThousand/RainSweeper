@@ -27,7 +27,7 @@ function updateSizeSelector(evt) {
 		option = document.createElement("option");
 		totalCells = 
 			dims[0]*dims[1]*Mode[modeSelector.value].groupType.numCells;
-		optionName = document.createTextNode(`${totalCells} cells`);
+		optionName = document.createTextNode(`${totalCells} clouds`);
 		option.setAttribute("value",dims);
 		option.appendChild(optionName);
 		sizeSelector.appendChild(option);
@@ -50,17 +50,19 @@ function NewGame() {
 	if(svgcanvas !== undefined)
 		svgcanvas.remove();
 	svgcanvas = document.createElementNS(Cell.SVGNS,"svg");
+	const dims = sizeSelector.value.split(",").map((x) => parseInt(x));
 	game = new Board.Board(
 		svgcanvas,
-		100,
+		40,
 		Mode[modeSelector.value].groupType,
-		3,3,
-		9);
+		dims[0],dims[1],
+		parseInt(numBombsInput.value)
+	);
 	svgcanvas.setAttribute("height",game.height.toString());
 	svgcanvas.setAttribute("width",game.width.toString());
 	document.body.appendChild(svgcanvas);
 }
-NewGame();
+// NewGame();
 newGameButton.addEventListener("click",event => {NewGame();});
 
 
