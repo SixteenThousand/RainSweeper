@@ -2,6 +2,7 @@ body {
 	/* background: cyan; */
 	background-image: url(".\\assets\\IMG_0717_edited.jpg");
 	background-size: cover;
+	color: yellow;
 }
 
 #page-title {
@@ -11,7 +12,10 @@ body {
 	font-family: tahoma;
 }
 
-/* #sweepercanvas { */
-/* 	/* height: "1159.2304845413264"; */ */
-/* 	width: 95vw; */
-/* } */
+#numBombs-Input {
+	width: 3rem;
+}
+
+#size-Selector {
+	width: 4rem;
+}

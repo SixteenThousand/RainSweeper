@@ -12,13 +12,22 @@
 </head>
 <body>
 	<header id="page-title"><i>RainSweeper</i></header>
-	<br><br><br>
+	<br>
 	<div id="new-game-options">
-		<select name="newMode" id="Mode-Selector"></select>
-		<select id="size-Selector" size="10"></select>
-		<!-- <select  -->
+		<span>
+			Mode:
+			<select name="newMode" id="Mode-Selector"></select>
+		</span>
+		<span>
+			Board size:
+			<select id="size-Selector"></select>
+		</span>
+		<span>
+			Number of bombs:
+			<input id="numBombs-Input" type="number">
+		</span>
 		<button id="New-Game">New Game</button>
+		<button id="debug-button">+++DEBUG+++</button>
 	</div>
-	<br><br><br>
 </body>
 </html>

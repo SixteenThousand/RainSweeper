@@ -4,14 +4,9 @@ import Mode from "./Mode.js";
 
 
 
-let svgcanvas;
-const newGameButton = document.getElementById("New-Game");
+// ++++++++++++ Mode Selector ++++++++++++
 const modeSelector = document.getElementById("Mode-Selector");
-const sizeSelector = document.getElementById("size-Selector");
-
-
-let option;
-let optionName;
+let option, optionName;
 for(const modeName in Mode) {
 	option = document.createElement("option");
 	optionName = document.createTextNode(modeName);
@@ -20,8 +15,37 @@ for(const modeName in Mode) {
 }
 
 
-let game;
 
+// ++++++++++++ Board Size Selector ++++++++++++
+const sizeSelector = document.getElementById("size-Selector");
+modeSelector.addEventListener("change",updateSizeSelector);
+function updateSizeSelector(evt) {
+	while(sizeSelector.children.length > 0)
+		sizeSelector.children[0].remove();
+	let option, optionName, totalCells;
+	for(const dims of Mode[modeSelector.value].sizes) {
+		option = document.createElement("option");
+		totalCells = 
+			dims[0]*dims[1]*Mode[modeSelector.value].groupType.numCells;
+		optionName = document.createTextNode(`${totalCells} cells`);
+		option.setAttribute("value",dims);
+		option.appendChild(optionName);
+		sizeSelector.appendChild(option);
+	}
+}
+
+
+
+// ++++++++++++ Number Of Bombs Input ++++++++++++
+const numBombsInput = document.getElementById("numBombs-Input");
+numBombsInput.setAttribute("value","9");
+
+
+
+// ++++++++++++ New Game Button ++++++++++++
+let svgcanvas;
+const newGameButton = document.getElementById("New-Game");
+let game;
 function NewGame() {
 	if(svgcanvas !== undefined)
 		svgcanvas.remove();
@@ -36,12 +60,12 @@ function NewGame() {
 	svgcanvas.setAttribute("width",game.width.toString());
 	document.body.appendChild(svgcanvas);
 }
-
-// NewGame(squareAndOctagon);
-svgcanvas = document.createElementNS(Cell.SVGNS,"svg");
-game = new Board.Board(svgcanvas,100,Mode["Squares & Octagons"].groupType,4,3,9);
-svgcanvas.setAttribute("height",game.height.toString());
-svgcanvas.setAttribute("width",game.width.toString());
-document.body.appendChild(svgcanvas);
-
+NewGame();
 newGameButton.addEventListener("click",event => {NewGame();});
+
+
+// ++++++++++++ debug ++++++++++++
+const debugButton = document.getElementById("debug-button");
+debugButton.addEventListener("click",evt => {
+	console.log(sizeSelector.children[0]);
+});
