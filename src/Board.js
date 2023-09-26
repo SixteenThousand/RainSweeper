@@ -1,4 +1,4 @@
-import cellpkg from "./Cell.js";
+import Cell from "./Cell.js";
 
 const SVGNS = "http://www.w3.org/2000/svg";
 const ADJ_TOL = 0.4;
@@ -58,7 +58,7 @@ class CellGroup {
 		let tmpAngle;
 		for(let info of this.cellsInfo) {
 			tmpAngle = Math.PI*(0.5-(1/info.numSides));
-			cells[cells.length] = new cellpkg.RegularCell(
+			cells[cells.length] = new Cell.RegularCell(
 				svgcanvas,
 				x + boundSide * info.x,
 				y + boundSide * info.y,
@@ -189,9 +189,9 @@ class Board {
 }
 
 
-const boardpkg = {
+const exports = {
 	"CellGroup":CellGroup,
 	"Board":Board,
 }
 
-export default boardpkg
+export default exports;

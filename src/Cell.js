@@ -212,11 +212,11 @@ class RegularCell {
 
 
 
-const cellpkg = {
+const exports = {
 	"SVGNS":SVGNS,
 	"RegularCell": RegularCell
 }
 
 
 
-export default cellpkg;
+export default exports;
