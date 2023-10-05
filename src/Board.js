@@ -73,7 +73,7 @@ class CellGroup {
 
 
 class Board {
-	constructor(svgcanvas,boundSide,groupType,numRows,numCols,numBombs) {
+	constructor(svgcanvas,boundSide,groupType,numRows,numCols,totalBombs) {
 		/*
 			(CellGroup) groupType: the type of cell group being used to
 				contruct this board
@@ -109,6 +109,8 @@ class Board {
 			groupType.groupPadding * 2
 		);
 		
+		this.numBombs = totalBombs;
+		
 		// dealing with the first click
 		document.addEventListener("click",
 			event => {
@@ -123,7 +125,7 @@ class Board {
 				}
 				cellIndices.splice(firstCellIndex,1);
 				let bombIndex;
-				for(let j=0; j<numBombs; ++j) {
+				for(let j=0; j<totalBombs; ++j) {
 					bombIndex = Math.floor(cellIndices.length*Math.random());
 					bombIndices.push(cellIndices[bombIndex]);
 					cellIndices.splice(bombIndex,1);
@@ -160,6 +162,7 @@ class Board {
 		if(this.cells[index1] === this.cells[index2]) {
 			return false;
 		}
+		// caculate which cellgroups these two cells are part of
 		let numCellsInRow = this.numCols * this.numCellsInGroup;
 		let row1 = Math.trunc(index1 / numCellsInRow);
 		let row2 = Math.trunc(index2 / numCellsInRow);
@@ -170,16 +173,12 @@ class Board {
 		if(Math.abs(row1-row2) > 1 || Math.abs(col1-col2) > 1) {
 			return false;
 		}
+		// calculate whether the two cells have any vertices in common
 		let vertices1 = this.cells[index1].boundShape.getAttribute("points").split(" ");
 		let vertices2 = this.cells[index2].boundShape.getAttribute("points").split(" ");
 		for(let i=0; i<vertices1.length; ++i) {
 			for(let j=0; j<vertices2.length; ++j) {
-				if(this.approxEqual(vertices1[i],vertices2[j]) &&
-						this.approxEqual(
-							vertices1[(i+1)%vertices1.length],
-							vertices2[(vertices2.length+j-1)%vertices2.length]
-						)
-				) {
+				if(this.approxEqual(vertices1[i],vertices2[j])) {
 					return true;
 				}
 			}

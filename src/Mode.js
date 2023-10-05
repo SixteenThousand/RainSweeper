@@ -18,7 +18,7 @@ const hexInfo = [
 	{x:0, y:0, angle:0, numSides:6},
 	{x:1.5, y:root75, angle:0, numSides:6}
 ];
-const hexGroup = new Board.CellGroup(hexInfo,3,2*root75,0.6);
+const hexGroup = new Board.CellGroup(hexInfo,3,2*root75,0.8);
 
 const triInfo = [
 	{x:0, y:0, angle:0.0, numSides:3},

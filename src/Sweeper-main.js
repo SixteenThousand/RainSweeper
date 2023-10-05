@@ -39,6 +39,8 @@ function updateSizeSelector(evt) {
 // ++++++++++++ Number Of Bombs Input ++++++++++++
 const numBombsInput = document.getElementById("numBombs-Input");
 numBombsInput.setAttribute("value","9");
+let numBombs = 10; // TBC
+document.addEventListener("incBombs",(evt) => {console.log("Increment Bombs!");}) // debug
 
 
 

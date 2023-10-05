@@ -30,6 +30,11 @@ const PADDING = 0.07;
 
 
 
+
+const incBombs = new Event("incBombs");
+const decBombs = new Event("decBombs");
+
+
 function regularPoly(x,y,angle,numSides,side) {
 	/*
 		returns the coordinates of the veritces of a regular polygon
@@ -173,9 +178,11 @@ class RegularCell {
 		if(this.isFlagged || this.isRevealed) {
 			this.flagpole.setAttribute("fill","transparent");
 			this.flag.setAttribute("fill", "transparent");
+			document.dispatchEvent(incBombs); // TBC
 		} else {
 			this.flagpole.setAttribute("fill",FLAGPOLE_COLOUR);
 			this.flag.setAttribute("fill",FLAG_COLOUR);
+			document.dispatchEvent(decBombs); // TBC
 		}
 		this.isFlagged = !this.isFlagged;
 	}

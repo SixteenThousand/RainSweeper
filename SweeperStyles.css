@@ -1,5 +1,4 @@
 body {
-	/* background: cyan; */
 	background-image: url(".\\assets\\IMG_0717_edited.jpg");
 	background-size: cover;
 	color: yellow;
@@ -17,5 +16,5 @@ body {
 }
 
 #size-Selector {
-	width: 4rem;
+	width: 6rem;
 }
