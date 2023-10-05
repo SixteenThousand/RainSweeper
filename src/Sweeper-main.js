@@ -39,8 +39,30 @@ function updateSizeSelector(evt) {
 // ++++++++++++ Number Of Bombs Input ++++++++++++
 const numBombsInput = document.getElementById("numBombs-Input");
 numBombsInput.setAttribute("value","9");
-let numBombs = 10; // TBC
-document.addEventListener("incBombs",(evt) => {console.log("Increment Bombs!");}) // debug
+let numBombs = 0;
+const NUM_BOMBS_LABEL_WIDTH = 3;
+function format(num,width) {
+	// returns a given number as a string with left-padding zeroes to make it 
+	// a given width
+	// (Number/integer) num: the given number
+	// (Number/integer) width: the given width
+	let numAsStr = num.toString();
+	return "".padEnd(width-numAsStr.length,'0').concat(numAsStr);
+}
+let numBombsLabel = document.createTextNode(format(numBombs,3));
+document.getElementById("current-game-state").appendChild(numBombsLabel);
+document.addEventListener("incBombs",
+	(evt) => {
+		++numBombs;
+		numBombsLabel.nodeValue = format(numBombs,3);
+	}
+);
+document.addEventListener("decBombs",
+	(evt) => {
+		--numBombs;
+		numBombsLabel.nodeValue =  format(numBombs,3);
+	}
+);
 
 
 

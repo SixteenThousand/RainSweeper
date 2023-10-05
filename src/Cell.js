@@ -175,24 +175,25 @@ class RegularCell {
 	}
 	
 	toggleFlag() {
+		if(this.isFlagged)
+			document.dispatchEvent(incBombs);
 		if(this.isFlagged || this.isRevealed) {
 			this.flagpole.setAttribute("fill","transparent");
 			this.flag.setAttribute("fill", "transparent");
-			document.dispatchEvent(incBombs); // TBC
 		} else {
 			this.flagpole.setAttribute("fill",FLAGPOLE_COLOUR);
 			this.flag.setAttribute("fill",FLAG_COLOUR);
-			document.dispatchEvent(decBombs); // TBC
+			document.dispatchEvent(decBombs);
 		}
 		this.isFlagged = !this.isFlagged;
 	}
 	
 	reveal() {
-		if(this.isFlagged) {
+		if(this.isFlagged)
 			return;
-		}
 		this.isRevealed = true;
 		if(this.isBomb) {
+			document.dispatchEvent(decBombs);
 			this.cellShape.setAttribute("fill","purple");
 			console.log("bomb functionailty not built!");
 		} else {
