@@ -4,7 +4,61 @@ import Mode from "./Mode.js";
 
 
 
-// ++++++++++++ Mode Selector ++++++++++++
+// ++++++++++++ INDICATORS ++++++++++++
+	// +++ Note +++
+	// This section uses some magic numbers. This is because any changes
+	// made to this part in the future will likely involve refactoring how the 
+	// code itself works, meaning any constants would need to be changed anyway.
+
+//  percentage of cells revealed indicator 
+let numRevealed, totalCells;
+function revealedFormat() {
+	let pc = Math.trunc((numRevealed/totalCells) * 100);
+	return "% Mapped: ".concat(
+		pc.toString().padStart(2,"0"),
+		"%",
+	);
+}
+document.addEventListener("decNumRevealed",
+	(evt) => {
+		--numRevealed;
+		console.log(numRevealed);
+	}
+);
+let pcRevealedLabel = document.createTextNode(revealedFormat());
+document.getElementById("pcRevealed-state").appendChild(pcRevealedLabel);
+		
+
+//  current number of bombs indicator 
+let numBombs = 0;
+function bombsFormat() {
+	// returns the string to be used as the current number of bombs
+	// indicator
+	let numAsStr = Math.abs(numBombs).toString();
+	return "# rainclouds left: ".concat(
+		numBombs < 0 ? "-":"",
+		numAsStr.padStart(3,"0")
+	);
+}
+let numBombsLabel = document.createTextNode(bombsFormat());
+document.getElementById("numBombs-state").appendChild(numBombsLabel);
+document.addEventListener("incBombs",
+	(evt) => {
+		++numBombs;
+		numBombsLabel.nodeValue = bombsFormat();
+	}
+);
+document.addEventListener("decBombs",
+	(evt) => {
+		--numBombs;
+		numBombsLabel.nodeValue =  bombsFormat();
+	}
+);
+
+
+
+// ++++++++++++ CREATE NEW GAME (SELECTORS) ++++++++++++
+//  mode selector 
 const modeSelector = document.getElementById("Mode-Selector");
 let option, optionName;
 for(const modeName in Mode) {
@@ -14,9 +68,7 @@ for(const modeName in Mode) {
 	modeSelector.appendChild(option);
 }
 
-
-
-// ++++++++++++ Board Size Selector ++++++++++++
+//  board size selector 
 const sizeSelector = document.getElementById("size-Selector");
 modeSelector.addEventListener("change",updateSizeSelector);
 function updateSizeSelector(evt) {
@@ -34,60 +86,42 @@ function updateSizeSelector(evt) {
 	}
 }
 
-
-
-// ++++++++++++ Number Of Bombs Input ++++++++++++
+//  number of bombs input 
 const numBombsInput = document.getElementById("numBombs-Input");
 numBombsInput.setAttribute("value","9");
-let numBombs = 0;
-const NUM_BOMBS_LABEL_WIDTH = 3;
-function format(num,width) {
-	// returns a given number as a string with left-padding zeroes to make it 
-	// a given width
-	// (Number/integer) num: the given number
-	// (Number/integer) width: the given width
-	let numAsStr = num.toString();
-	return "".padEnd(width-numAsStr.length,'0').concat(numAsStr);
-}
-let numBombsLabel = document.createTextNode(format(numBombs,3));
-document.getElementById("current-game-state").appendChild(numBombsLabel);
-document.addEventListener("incBombs",
-	(evt) => {
-		++numBombs;
-		numBombsLabel.nodeValue = format(numBombs,3);
-	}
-);
-document.addEventListener("decBombs",
-	(evt) => {
-		--numBombs;
-		numBombsLabel.nodeValue =  format(numBombs,3);
-	}
-);
 
 
-
-// ++++++++++++ New Game Button ++++++++++++
+//  new game button 
 let svgcanvas;
-const newGameButton = document.getElementById("New-Game");
-let game;
-function NewGame() {
-	if(svgcanvas !== undefined)
-		svgcanvas.remove();
-	svgcanvas = document.createElementNS(Cell.SVGNS,"svg");
-	const dims = sizeSelector.value.split(",").map((x) => parseInt(x));
-	game = new Board.Board(
-		svgcanvas,
-		40,
-		Mode[modeSelector.value].groupType,
-		dims[0],dims[1],
-		parseInt(numBombsInput.value)
-	);
-	svgcanvas.setAttribute("height",game.height.toString());
-	svgcanvas.setAttribute("width",game.width.toString());
-	document.body.appendChild(svgcanvas);
-}
-// NewGame();
-newGameButton.addEventListener("click",event => {NewGame();});
+document.getElementById("New-Game").addEventListener("click",
+	(evt) => {
+		// get rid of existing game
+		if(svgcanvas !== undefined)
+			svgcanvas.remove();
+		svgcanvas = document.createElementNS(Cell.SVGNS,"svg");
+		
+		// actually make the game
+		const dims = sizeSelector.value.split(",").map((x) => parseInt(x));
+		let game = new Board.Board(
+			svgcanvas,
+			40,
+			Mode[modeSelector.value].groupType,
+			dims[0],dims[1],
+			parseInt(numBombsInput.value)
+		);
+		
+		// set initial indicator values
+		numBombs = parseInt(numBombsInput.value);
+		numBombsLabel.nodeValue = bombsFormat();
+		totalCells = game.cells.length;
+		pcRevealedLabel.nodeValue = revealedFormat();
+		
+		// add the game to the DOM
+		svgcanvas.setAttribute("height",game.height.toString());
+		svgcanvas.setAttribute("width",game.width.toString());
+		document.body.appendChild(svgcanvas);
+	}
+);
 
 
 // ++++++++++++ debug ++++++++++++

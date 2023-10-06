@@ -18,3 +18,8 @@ body {
 #size-Selector {
 	width: 6rem;
 }
+
+#current-game-state {
+	font-size: 2rem;
+	font-weight: bold;
+}
