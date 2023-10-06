@@ -11,6 +11,15 @@ body {
 	font-family: tahoma;
 }
 
+/* new game menu */
+#new-game-options {
+	padding: 1rem;
+}
+
+#new-game-options > span {
+	padding: 0 0.3rem;
+}
+
 #numBombs-Input {
 	width: 3rem;
 }
@@ -19,7 +28,12 @@ body {
 	width: 6rem;
 }
 
+/* indicators */
 #current-game-state {
 	font-size: 2rem;
 	font-weight: bold;
+}
+
+#current-game-state > span {
+	padding: 0px 4rem 1rem 1rem;
 }

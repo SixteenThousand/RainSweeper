@@ -52,12 +52,12 @@ const twelvePointInfo = [
 		angle: Math.PI/3,
 		numSides: 3
 	},
-	{
-		x: (0.5 * (4+root3)),
-		y: (0.5 * (3+2*root3)),
-		angle: Math.PI/6,
-		numSides: 3
-	},
+	// {
+	// 	x: (0.5 * (4+root3)),
+	// 	y: (0.5 * (3+2*root3)),
+	// 	angle: Math.PI/6,
+	// 	numSides: 3
+	// },
 	{x: (0.5 * (2+root3)),
 		y: (0.5 * (5+2*root3)),
 		angle: 0.0,
@@ -69,6 +69,12 @@ const twelvePointInfo = [
 		angle: Math.PI/2,
 		numSides: 3
 	},
+	{
+		x: (-0.5 * root3),
+		y: (0.5 * (3+2*root3)),
+		angle: Math.PI/6,
+		numSides: 3
+	}
 ];
 const twelvePointGroup = new Board.CellGroup(twelvePointInfo,2+root3,2+root3,1.5);
 

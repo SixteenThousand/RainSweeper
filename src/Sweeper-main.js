@@ -11,22 +11,28 @@ import Mode from "./Mode.js";
 	// code itself works, meaning any constants would need to be changed anyway.
 
 //  percentage of cells revealed indicator 
-let numRevealed, totalCells;
-function revealedFormat() {
-	let pc = Math.trunc((numRevealed/totalCells) * 100);
+let numMapped = 0, totalCells;
+function mappedFormat() {
+	let pc = Math.trunc((numMapped/totalCells) * 100);
 	return "% Mapped: ".concat(
 		pc.toString().padStart(2,"0"),
 		"%",
 	);
 }
-document.addEventListener("decNumRevealed",
+let pcMappedLabel = document.createTextNode(mappedFormat());
+document.getElementById("pcMapped-state").appendChild(pcMappedLabel);
+document.addEventListener("incNumMapped",
 	(evt) => {
-		--numRevealed;
-		console.log(numRevealed);
+		++numMapped;
+		pcMappedLabel.nodeValue = mappedFormat();
 	}
 );
-let pcRevealedLabel = document.createTextNode(revealedFormat());
-document.getElementById("pcRevealed-state").appendChild(pcRevealedLabel);
+document.addEventListener("decNumMapped",
+	(evt) => {
+		--numMapped;
+		pcMappedLabel.nodeValue = mappedFormat();
+	}
+);
 		
 
 //  current number of bombs indicator 
@@ -114,7 +120,7 @@ document.getElementById("New-Game").addEventListener("click",
 		numBombs = parseInt(numBombsInput.value);
 		numBombsLabel.nodeValue = bombsFormat();
 		totalCells = game.cells.length;
-		pcRevealedLabel.nodeValue = revealedFormat();
+		pcMappedLabel.nodeValue = mappedFormat();
 		
 		// add the game to the DOM
 		svgcanvas.setAttribute("height",game.height.toString());

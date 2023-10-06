@@ -10,7 +10,6 @@ const LABEL_COLOURS = [
 	"#00ffff",
 	"#ffff00",
 	"#ff00ff",
-	"#000000",
 	"#ffffff"
 ];
 const LABEL_FONT = "Helvetica, Arial";
@@ -33,6 +32,8 @@ const PADDING = 0.07;
 
 const incBombs = new Event("incBombs");
 const decBombs = new Event("decBombs");
+const incNumMapped = new Event("incNumMapped");
+const decNumMapped = new Event("decNumMapped")
 
 
 function regularPoly(x,y,angle,numSides,side) {
@@ -175,8 +176,10 @@ class RegularCell {
 	}
 	
 	toggleFlag() {
-		if(this.isFlagged)
+		if(this.isFlagged) {
 			document.dispatchEvent(incBombs);
+			document.dispatchEvent(decNumMapped);
+		}
 		if(this.isFlagged || this.isRevealed) {
 			this.flagpole.setAttribute("fill","transparent");
 			this.flag.setAttribute("fill", "transparent");
@@ -184,6 +187,7 @@ class RegularCell {
 			this.flagpole.setAttribute("fill",FLAGPOLE_COLOUR);
 			this.flag.setAttribute("fill",FLAG_COLOUR);
 			document.dispatchEvent(decBombs);
+			document.dispatchEvent(incNumMapped);
 		}
 		this.isFlagged = !this.isFlagged;
 	}
@@ -192,6 +196,7 @@ class RegularCell {
 		if(this.isFlagged)
 			return;
 		this.isRevealed = true;
+		document.dispatchEvent(incNumMapped);
 		if(this.isBomb) {
 			document.dispatchEvent(decBombs);
 			this.cellShape.setAttribute("fill","purple");
