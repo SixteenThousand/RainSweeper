@@ -185,6 +185,15 @@ class Board {
 		}
 		return false;
 	}
+	
+	isWon() {
+		// determines whether the player has won the game when it is called
+		for(let cell of this.cells) {
+			if(!cell.isRevealed && !cell.isBomb)
+				return false;
+		}
+		return true;
+	}
 }
 
 

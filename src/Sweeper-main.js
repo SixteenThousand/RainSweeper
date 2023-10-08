@@ -2,6 +2,11 @@ import Cell from "./Cell.js";
 import Board from "./Board.js";
 import Mode from "./Mode.js";
 
+const CELL_SIZE = 40;
+const DEFAULT_NUM_BOMBS = 16;
+const DEFAULT_ROWS = 4;
+const DEFAULT_COLS = 6;
+const DEFAULT_MODE = "Squares & Octagons";
 
 
 // ++++++++++++ INDICATORS ++++++++++++
@@ -14,7 +19,7 @@ import Mode from "./Mode.js";
 let numMapped = 0, totalCells;
 function mappedFormat() {
 	let pc = Math.trunc((numMapped/totalCells) * 100);
-	return "% Mapped: ".concat(
+	return "Percentage Mapped: ".concat(
 		pc.toString().padStart(2,"0"),
 		"%",
 	);
@@ -25,6 +30,9 @@ document.addEventListener("incNumMapped",
 	(evt) => {
 		++numMapped;
 		pcMappedLabel.nodeValue = mappedFormat();
+		if(game.isWon()) {
+			alert("You Win!\nYou can start a new game using the menu above");
+		}
 	}
 );
 document.addEventListener("decNumMapped",
@@ -41,7 +49,7 @@ function bombsFormat() {
 	// returns the string to be used as the current number of bombs
 	// indicator
 	let numAsStr = Math.abs(numBombs).toString();
-	return "# rainclouds left: ".concat(
+	return "Number of rainclouds left: ".concat(
 		numBombs < 0 ? "-":"",
 		numAsStr.padStart(3,"0")
 	);
@@ -98,7 +106,7 @@ numBombsInput.setAttribute("value","9");
 
 
 //  new game button 
-let svgcanvas;
+let svgcanvas, game;
 document.getElementById("New-Game").addEventListener("click",
 	(evt) => {
 		// get rid of existing game
@@ -108,9 +116,9 @@ document.getElementById("New-Game").addEventListener("click",
 		
 		// actually make the game
 		const dims = sizeSelector.value.split(",").map((x) => parseInt(x));
-		let game = new Board.Board(
+		game = new Board.Board(
 			svgcanvas,
-			40,
+			CELL_SIZE,
 			Mode[modeSelector.value].groupType,
 			dims[0],dims[1],
 			parseInt(numBombsInput.value)
@@ -125,13 +133,27 @@ document.getElementById("New-Game").addEventListener("click",
 		// add the game to the DOM
 		svgcanvas.setAttribute("height",game.height.toString());
 		svgcanvas.setAttribute("width",game.width.toString());
-		document.body.appendChild(svgcanvas);
+		document.getElementById("game-container").appendChild(svgcanvas);
 	}
 );
 
 
-// ++++++++++++ debug ++++++++++++
-const debugButton = document.getElementById("debug-button");
-debugButton.addEventListener("click",evt => {
-	console.log(sizeSelector.children[0]);
-});
+// create the default game
+// (i.e. the version the user will see loading the website)
+svgcanvas = document.createElementNS(Cell.SVGNS,"svg");
+game = new Board.Board(
+	svgcanvas,
+	CELL_SIZE,
+	Mode[DEFAULT_MODE].groupType,
+	DEFAULT_ROWS,DEFAULT_COLS,
+	DEFAULT_NUM_BOMBS
+);
+
+numBombs = DEFAULT_NUM_BOMBS;
+numBombsLabel.nodeValue = bombsFormat();
+totalCells = game.cells.length;
+pcMappedLabel.nodeValue = mappedFormat();
+
+svgcanvas.setAttribute("height",game.height.toString());
+svgcanvas.setAttribute("width",game.width.toString());
+document.getElementById("game-container").appendChild(svgcanvas);

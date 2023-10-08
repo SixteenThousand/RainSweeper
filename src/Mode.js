@@ -82,7 +82,7 @@ const twelvePointGroup = new Board.CellGroup(twelvePointInfo,2+root3,2+root3,1.5
 const exports = {
 	"Squares & Octagons": {
 		"groupType":squareAndOctagon,
-		"sizes": [[3,3],[3,4],[4,4],[5,5]]
+		"sizes": [[3,3],[3,4],[4,4],[4,6],[5,5]]
 	},
 	"All Hexagons": {
 		"groupType": hexGroup,
@@ -94,7 +94,7 @@ const exports = {
 	},
 	"The Six-Pointed Star": {
 		"groupType": hexStarGroup,
-		"sizes": [[3,2],[3,3],[4,3],[5,4]]
+		"sizes": [[3,4],[3,5],[3,6],[5,7]]
 	},
 	"The Twelve-Pointed Star": {
 		"groupType": twelvePointGroup,
