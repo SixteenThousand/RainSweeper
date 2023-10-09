@@ -1,8 +1,9 @@
-# note the assets folder will be added to the git repo once the images have been properly edited,
-# to reduce the eventual git repo size
-# ditto for the dist folder
+# note some files ignored here will at some point be included (such as 
+# everything in dist), but have been left out for the time being in order
+# to minimise the size of the git repo
 assets/*
 assets/**/*
+!*.svg
 dist/*
 yonacommitmsg.txt
 *.yona

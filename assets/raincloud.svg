@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 85">
+	<!-- <polygon points="35,30 65,30 75,50 25,50" fill="#80848d"></polygon> -->
+	<circle cx="23" cy="15" r="13" fill="#80848d"></circle>
+	<circle cx="53" cy="15" r="13" fill="#80848d"></circle>
+	<circle cx="63" cy="30" r="13" fill="#80848d"></circle>
+	<circle cx="13" cy="30" r="13" fill="#80848d"></circle>
+	<circle cx="38" cy="13" r="13" fill="#80848d"></circle>
+	<circle cx="23" cy="35" r="13" fill="#80848d"></circle>
+	<circle cx="38" cy="35" r="13" fill="#80848d"></circle>
+	<circle cx="53" cy="35" r="13" fill="#80848d"></circle>
+	<image x="18" y="55" width="10" height="15" href="./raindrop.svg"/>
+	<image x="33" y="70" width="10" height="15" href="./raindrop.svg"/>
+	<image x="48" y="55" width="10" height="15" href="./raindrop.svg"/>
+</svg>
