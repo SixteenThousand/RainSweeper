@@ -221,7 +221,6 @@ class RegularCell {
 			bombImage.setAttribute("height",this.radius.toString());
 			bombImage.setAttribute("href",BOMB_IMAGE_LOC);
 			this.svgcanvas.appendChild(bombImage);
-			console.log(bombImage); // debug
 		} else {
 			let label = document.createElementNS(SVGNS,"text");
 			let labelColour;
