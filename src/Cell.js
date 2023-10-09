@@ -1,7 +1,13 @@
+// ++++++++++++ cell background ++++++++++++
 const UNREVEALED_COLOUR = "white";
+// 	the padding to be put around each cell
+// (as a fraction of the bounding shape's side length
+const PADDING = 0.07;
 const PADDING_COLOUR = "transparent";
 const NO_BOMB_BACKGROUND = "#00ffff";
-const BOMB_BACKGROUND = "#000099";
+const BOMB_OPACITY = "0.2";
+
+// ++++++++++++ the label (showing the # of adjacent bombs) ++++++++++++
 const LABEL_COLOURS = [
 	"#00ffff",
 	"#0000ff",
@@ -14,6 +20,10 @@ const LABEL_COLOURS = [
 ];
 const LABEL_FONT = "Helvetica, Arial";
 const SVGNS = "http://www.w3.org/2000/svg";
+// the ratio of the font size to the cell side length
+const FONT_CELL_RATIO = 0.5;
+
+// ++++++++++++ the flag ++++++++++++
 // The side length of the flag (i.e. the triangle part) divided by 
 // twice the distance from the the centre of the cell to one of its sides
 const FLAG_CELL_RATIO = 0.25;
@@ -21,11 +31,11 @@ const POLEHEIGHT_FLAG_RATIO = 3;
 const POLEWIDTH_FLAG_RATIO = 0.15;
 const FLAG_COLOUR = "red";
 const FLAGPOLE_COLOUR = "black";
-// the ratio of the font size to the cell side length
-const FONT_CELL_RATIO = 0.5;
-// 	the padding to be put around each cell
-// (as a fraction of the bounding shape's side length
-const PADDING = 0.07;
+
+// ++++++++++++ the raincloud image (i.e. the bomb image) ++++++++++++
+const BOMB_IMAGE_LOC = "./assets/raincloud.svg";
+
+
 
 
 
@@ -100,12 +110,15 @@ class RegularCell {
 		this.numSides = numSides;
 		this.svgcanvas = svgcanvas;
 		
-		// ++++++++++++ centre of the cell ++++++++++++
-		// (for postioning the flag/number of adjacent bombs) 
+		// ++++++++++++ geometric properties of the cell ++++++++++++
+		// (for positioning stuff on the cell, such as the flag) 
 		this.centreX = x + (boundSide * Math.sin(Math.PI/numSides - angle)) /
 			(2 * Math.sin(Math.PI/numSides));
 		this.centreY = y + (boundSide * Math.cos(Math.PI/numSides - angle)) /
 			(2 * Math.sin(Math.PI/numSides));
+		this.radius = this.cellSide / Math.tan(Math.PI/numSides);
+		
+		this.createFlag();
 		
 		// ++++++++++++ Cell Properties (to be reset later) ++++++++++++
 		this.isBomb = false;
@@ -113,7 +126,6 @@ class RegularCell {
 		this.isRevealed = false;
 		this.isFlagged = false;
 		
-		this.createFlag();
 		
 		// ++++++++++++ add event listeners ++++++++++++
 		this.cellShape.addEventListener("click",
@@ -199,8 +211,17 @@ class RegularCell {
 		document.dispatchEvent(incNumMapped);
 		if(this.isBomb) {
 			document.dispatchEvent(decBombs);
-			this.cellShape.setAttribute("fill","purple");
-			console.log("bomb functionailty not built!");
+			this.cellShape.setAttribute("opacity",BOMB_OPACITY);
+			let bombImage = document.createElementNS(SVGNS,"image");
+			bombImage.setAttribute("x",
+				(this.centreX - 0.5*this.radius).toString());
+			bombImage.setAttribute("y",
+				(this.centreY - 0.5*this.radius).toString());
+			bombImage.setAttribute("width",this.radius.toString());
+			bombImage.setAttribute("height",this.radius.toString());
+			bombImage.setAttribute("href",BOMB_IMAGE_LOC);
+			this.svgcanvas.appendChild(bombImage);
+			console.log(bombImage); // debug
 		} else {
 			let label = document.createElementNS(SVGNS,"text");
 			let labelColour;
