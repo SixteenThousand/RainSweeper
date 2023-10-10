@@ -128,6 +128,7 @@ document.getElementById("New-Game").addEventListener("click",
 		numBombs = parseInt(numBombsInput.value);
 		numBombsLabel.nodeValue = bombsFormat();
 		totalCells = game.cells.length;
+		numMapped = 0;
 		pcMappedLabel.nodeValue = mappedFormat();
 		
 		// add the game to the DOM
