@@ -2,6 +2,7 @@ body {
 	background-image: url("./assets/IMG_0717_edited.jpg");
 	background-size: cover;
 	color: yellow;
+	font-weight:bold;
 }
 
 #page-title {
@@ -36,4 +37,10 @@ body {
 
 #current-game-state > span {
 	padding: 0px 4rem 1rem 1rem;
+}
+
+
+#instructions {
+	background: rgba(255,255,255,0.4);
+	color: black;
 }

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+	<defs>
+		<polygon
+			fill="yellow"
+			points="0,0 13.1,9.5 -3.1,9.5 10,0 5,15.4"
+			transform="rotate(36) scale(0.8)"
+			id="star"
+		/>
+	</defs>
+	<!-- central triangle -->
+	<polygon
+		points="35,35 65,35 50,61.0"
+		fill="white"
+		stroke="black"
+		stroke-width="1"
+		id="tri"
+	/>
+	<use x="50" y="38" href="#star"/>
+
+	<!-- neighbour triangles -->
+	<use href="#tri" transform="rotate(60 35 35)"/>
+	<use href="#tri" transform="rotate(120 35 35)"/>
+	<use href="#tri" transform="rotate(180 35 35)"/>
+	<use href="#tri" transform="rotate(-120 35 35)"/>
+	<use href="#tri" transform="rotate(-60 35 35)"/>
+	
+	<use href="#tri" transform="rotate(120 65 35)"/>
+	<use href="#tri" transform="rotate(180 65 35)"/>
+	<use href="#tri" transform="rotate(-120 65 35)"/>
+	<use href="#tri" transform="rotate(-60 65 35)"/>
+	
+	<use href="#tri" transform="rotate(120 50,61.0)"/>
+	<use href="#tri" transform="rotate(180 50,61.0)"/>
+	<use href="#tri" transform="rotate(-120 50,61.0)"/>
+</svg>
