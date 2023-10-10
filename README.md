@@ -16,7 +16,7 @@ Looks like the only way out for you is to guess which clouds are rainclouds. Tha
 
 Clouds are neighbours if they share *any corners in common*, so in the two examples below, the square with the gold star has 4 neighbours, while the triangle with the gold star has 12!
 
-![Square & 4 octagons](/assets/SqOctExample.svg)		![Triangles](/assets/TriangleExample.svg)
+<img alt="Square & 4 octagons" src"./assets/SqOctExample.svg"/> <img alt="Triangles" src="./assets/TriangleExample.svg"/>
 
 
 Controls:

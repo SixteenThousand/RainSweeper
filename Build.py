@@ -7,4 +7,4 @@ def bundle(mode):
 	os.system(f"npx webpack --config src/Sweeper.config.js --mode={mode}")
 
 
-bundle("development")
+bundle("production")

@@ -100,8 +100,8 @@ function updateSizeSelector(evt) {
 	}
 }
 
-//  number of bombs input 
-const numBombsInput = document.getElementById("numBombs-Input");
+//  number of bombs selector
+const numBombsInput = document.getElementById("numBombs-Selector");
 numBombsInput.setAttribute("value","9");
 
 
@@ -138,7 +138,7 @@ document.getElementById("New-Game").addEventListener("click",
 );
 
 
-// create the default game
+// ++++++++++++ CREATE DEFAULT GAME ++++++++++++
 // (i.e. the version the user will see loading the website)
 svgcanvas = document.createElementNS(Cell.SVGNS,"svg");
 game = new Board.Board(
