@@ -6,7 +6,7 @@ At the moment, the RainSweeper site has several modes, including, but not limite
 - Hexagons!
 - Triangles!
 - Hexagons *and* triangles!!
-You can play RainSweeper on the [RainSweeper website](#)
+You can play RainSweeper on the [RainSweeper website](https://sixteenthousand.github.io/RainSweeper/)
 
 
 ## Story
