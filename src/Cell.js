@@ -207,6 +207,8 @@ class RegularCell {
 	reveal() {
 		if(this.isFlagged)
 			return;
+		if(this.isRevealed)
+			return;
 		this.isRevealed = true;
 		document.dispatchEvent(incNumMapped);
 		if(this.isBomb) {
