@@ -16,7 +16,7 @@ const LABEL_COLOURS = [
 	"#00ffff",
 	"#ffff00",
 	"#ff00ff",
-	"#ffffff"
+	"#000000"
 ];
 const LABEL_FONT = "Helvetica, Arial";
 const SVGNS = "http://www.w3.org/2000/svg";
