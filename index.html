@@ -30,6 +30,7 @@
 			<input id="numBombs-Selector" type="number">
 		</span>
 		<button id="New-Game">New Game</button>
+		<a href="#instructions">Help</a>
 	</div>
 	
 	<div id="current-game-state">
@@ -41,8 +42,11 @@
 	
 	<div id="instructions">
 		<h1>Welcome to RainSweeper!</h1>
-		<p> Ever played minesweeper and thought "I like this, but there's just too many damn squares in this game! Also, it's not weather themed!"? No? Well, either way, this problem has a solution: RainSweeper!
-			At the moment, the RainSweeper site has several modes, including, but not limited to:
+		<p> Ever played minesweeper and thought "I like this, but there's just 
+		too many damn squares in this game! Also, it's not weather themed!"? 
+		No? Well, either way, this problem has a solution: RainSweeper! At the 
+		moment, the RainSweeper site has several modes, including, but not 
+		limited to:
 			<ul>
 				<li>Squares & Octagons!</li>
 				<li>Hexagons!</li>
@@ -52,27 +56,44 @@
 		</p>
 		
 		<h2>Story</h2>
-		<p> Imagine: you just got your dream job, working for the met office, but oh no! You just accidentally rm -rf'ed the whole database! Now there's a huge group of clouds headed straight for the UK, and no-one knows which of them are rainclouds and which are not!
-			Looks like the only way out for you is to guess which clouds are rainclouds. Thankfully, these clouds follow a nice pattern: if you guess that a cloud is not a raincloud and are right, that cloud will show you how many of the clouds next to it are rainclouds! You have a chance!
+		<p>
+		Imagine: you just got your dream job, working for the met office, 
+		but oh no! You just accidentally rm -rf'ed the whole database! Now 
+		there's a huge group of clouds headed straight for the UK, and no-one 
+		knows which of them are rainclouds and which are not! Looks like the 
+		only way out for you is to guess which clouds are rainclouds. 
+		Thankfully, these clouds follow a nice pattern: if you guess that a 
+		cloud is not a raincloud and are right, that cloud will show you how 
+		many of the clouds next to it are rainclouds! You have a chance!
 		</p>
 		
-		<p> Clouds are neighbours if they <u>share any corners in common</u>, so in the two examples below, the square with the gold star has 4 neighbours, while the triangle with the gold star has 12!
+		<p>
+		Clouds are neighbours if they <u>share any corners in common</u>, so in 
+		the two examples below, the square with the gold star has 4 neighbours, 
+		while the triangle with the gold star has 12!
 		</p>
 		
 		<span>
-			<img height="200" src="./assets/SqOctExample.svg" alt="Square & 4 octagons"/>
-			<img height="200" src="./assets/TriangleExample.svg" alt="Triangles"/>
+			<img height="200" src="./assets/SqOctExample.svg" 
+				alt="Square & 4 octagons"/>
+			<img height="200" src="./assets/TriangleExample.svg" 
+				alt="Triangles"/>
 		</span>
 		
 		<p> Controls:
 			<ul>
 				<li>right-click a cloud to flag it as a raincloud</li>
-				<li>left-click a cloud to reveal whehter it is a raincloud or not</li>
+				<li>left-click a cloud to reveal whether it is a raincloud or 
+					not</li>
 			</ul>
-			If you do reveal a raincloud, don't worry! The met office is often wrong anyway! Just try to <u>reveal as few rainclouds as possible</u>.
+			If you do reveal a raincloud, don't worry! The met office is often 
+			wrong anyway! Just try to <u>reveal as few rainclouds as possible
+			</u>.
 		</p>
 		
-		<p>You can find the code (or at least a more readable version of it!) on <a href="https://github.com/SixteenThousand/RainSweeper">my GitHub</a>.</p>
+		<p>You can find the code (or at least a more readable version of it!) 
+		on <a href="https://github.com/SixteenThousand/RainSweeper">my 
+		GitHub</a>.</p>
 	</div>
 </body>
 </html>
