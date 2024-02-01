@@ -6,6 +6,6 @@ assets/**/*
 !*.svg
 !assets/IMG_0717_edited.jpg
 yonacommitmsg.txt
-*.yona
+.yona
 **/jaeha.*
 jaeha.*
