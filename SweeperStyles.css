@@ -1,22 +1,26 @@
+* {
+	--popup-bg: rgba(255,255,255,0.4);
+}
+
 body {
 	background-image: url("./Background.jpg");
 	background-size: cover;
-	color: yellow;
-	font-weight:bold;
+	color: black;
+	font-family: Arial;
+	font-weight: bold;
 }
 
-a {
-	color: #888800;
+header {
+	background-color: var(--popup-bg);
 }
-a:visited {
-	color: #555500;
+
+button {
+	font-weight: bold;
 }
 
 #page-title {
 	text-align: center;
 	font-size: 4rem;
-	color: yellow;
-	font-family: tahoma;
 }
 
 /* new game menu */
@@ -39,7 +43,6 @@ a:visited {
 /* indicators */
 #current-game-state {
 	font-size: 2rem;
-	font-weight: bold;
 }
 
 #current-game-state > span {
@@ -48,6 +51,15 @@ a:visited {
 
 
 #instructions {
-	background: rgba(255,255,255,0.4);
-	color: black;
+	background: var(--popup-bg);
+	padding: 5px;
+}
+
+#instructions-exit {
+	display: flex;
+	justify-content: center;
+}
+
+#instructions-exit > button {
+	font-size: 1.2rem;
 }
