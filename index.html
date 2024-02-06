@@ -18,17 +18,17 @@
 		</div>
 		<div id="new-game-options">
 			<span>
-				<span class="form-label">Mode</span>
+				<span class="form-legend">Mode</span>
 				<select name="newMode" id="Mode-Selector">
 					<option>--Choose a mode first--</option>
 				</select>
 			</span>
 			<span>
-				<span class="form-label">Board Size</span>
+				<span class="form-legend">Board Size</span>
 				<select id="size-Selector"></select>
 			</span>
 			<span>
-				<span class="form-label">Rainclouds</span>
+				<span class="form-legend">Rainclouds</span>
 				<input id="numBombs-Selector" type="number">
 			</span>
 			<button id="New-Game">Start New Game</button>
@@ -39,8 +39,14 @@
 			</span>
 		</div>
 		<div id="current-game-state">
-			<span id="pcMapped-state"></span>
-			<span id="numBombs-state"></span>
+			<span class="data-and-legend">
+				<span class="game-state-legend">Mapped</span>
+				<span id="pcMapped-state" class="game-state-indicator"></span>
+			</span>
+			<span class="data-and-legend">
+				<span class="game-state-legend">Rainclouds Left</span>
+				<span id="numBombs-state" class="game-state-indicator"></span>
+			</span>
 		</div>
 	</header>
 	

@@ -19,10 +19,7 @@ const DEFAULT_MODE = "Squares & Octagons";
 let numMapped = 0, totalCells;
 function mappedFormat() {
 	let pc = Math.trunc((numMapped/totalCells) * 100);
-	return "Percentage Mapped: ".concat(
-		pc.toString().padStart(2,"0"),
-		"%",
-	);
+	return pc.toString().concat("%");
 }
 let pcMappedLabel = document.createTextNode(mappedFormat());
 document.getElementById("pcMapped-state").appendChild(pcMappedLabel);
@@ -49,9 +46,9 @@ function bombsFormat() {
 	// returns the string to be used as the current number of bombs
 	// indicator
 	let numAsStr = Math.abs(numBombs).toString();
-	return "Number of rainclouds left: ".concat(
-		numBombs < 0 ? "-":"",
-		numAsStr.padStart(3,"0")
+	return "".concat(
+		numBombs < 0 ? "-":" ",
+		numAsStr
 	);
 }
 let numBombsLabel = document.createTextNode(bombsFormat());

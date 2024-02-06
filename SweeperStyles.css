@@ -1,6 +1,9 @@
 * {
 	--popup-bg: rgba(255,255,255,0.4);
-	--input-bg: rgba(0,0,0,0.8);
+	--data-bg: rgba(0,0,0,0.8);
+	--data-text: white;
+	--legend-bg: white;
+	--legend-text: black;
 }
 
 body {
@@ -13,6 +16,11 @@ body {
 
 header {
 	background-color: var(--popup-bg);
+	padding: 1rem 5px;
+}
+
+.data-and-legend {
+	margin: 3px 1rem;
 }
 
 /* new game form styling */
@@ -22,13 +30,14 @@ button {
 	padding: 3px 6px;
 	margin: 0 -2px;
 	border: none;
-	background: var(--input-bg);
-	color: white;
+	background: var(--data-bg);
+	color: var(--data-text);
 	font-weight: bold;
 }
 
-.form-label {
-	background: white;
+.form-legend {
+	background: var(--legend-bg);
+	color: var(--legend-text);
 	margin: 0 -2px;
 	padding: 2px 3px;
 }
@@ -59,9 +68,16 @@ button {
 #current-game-state {
 	font-size: 2rem;
 }
-
-#current-game-state > span {
-	padding: 0px 4rem 1rem 1rem;
+.game-state-legend {
+	background: var(--legend-bg);
+	color: var(--legend-text);
+	padding: 3px 9px;
+}
+.game-state-indicator {
+	margin: 0 -9px;
+	padding: 3px 9px;
+	background: var(--data-bg);
+	color: var(--data-text);
 }
 
 
