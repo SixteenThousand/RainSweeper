@@ -1,5 +1,6 @@
 * {
 	--popup-bg: rgba(255,255,255,0.4);
+	--input-bg: rgba(0,0,0,0.8);
 }
 
 body {
@@ -14,8 +15,22 @@ header {
 	background-color: var(--popup-bg);
 }
 
+/* new game form styling */
+select,
+input,
 button {
+	padding: 3px 6px;
+	margin: 0 -2px;
+	border: none;
+	background: var(--input-bg);
+	color: white;
 	font-weight: bold;
+}
+
+.form-label {
+	background: white;
+	margin: 0 -2px;
+	padding: 2px 3px;
 }
 
 #page-title {
