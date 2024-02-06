@@ -50,11 +50,11 @@
 		</svg>
 	</defs>
 	<use
-		x="0"
-		y="0"
-		width="80"
-		height="80"
-		transform="rotate(45)"
+		x="5"
+		y="5"
+		width="90"
+		height="90"
+		transform="translate(-5 5) rotate(45,50,50)"
 		href="#vertical-umbrella"
 	/>
 </svg>
