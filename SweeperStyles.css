@@ -19,10 +19,6 @@ header {
 	padding: 1rem 5px;
 }
 
-.data-and-legend {
-	margin: 3px 1rem;
-}
-
 /* new game form styling */
 select,
 input,
@@ -48,11 +44,11 @@ button {
 }
 
 /* new game menu */
-#new-game-options {
+#new-game-form {
 	padding: 1rem;
 }
 
-#new-game-options > span {
+#new-game-form > span {
 	padding: 0 0.3rem;
 }
 
@@ -68,6 +64,10 @@ button {
 #current-game-state {
 	font-size: 2rem;
 }
+.data-and-legend {
+	margin: 3px 1rem;
+}
+
 .game-state-legend {
 	background: var(--legend-bg);
 	color: var(--legend-text);
