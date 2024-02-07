@@ -19,6 +19,11 @@ header {
 	padding: 1rem 5px;
 }
 
+#page-title {
+	text-align: center;
+	font-size: 4rem;
+}
+
 /* new game form styling */
 select,
 input,
@@ -38,11 +43,6 @@ button {
 	padding: 2px 3px;
 }
 
-#page-title {
-	text-align: center;
-	font-size: 4rem;
-}
-
 /* new game menu */
 #new-game-form {
 	padding: 1rem;
@@ -50,6 +50,8 @@ button {
 
 #new-game-form > span {
 	padding: 0 0.3rem;
+	margin: 0.3rem 0.5rem;
+	display: inline-block;
 }
 
 #numBombs-Selector {
@@ -65,7 +67,9 @@ button {
 	font-size: 2rem;
 }
 .data-and-legend {
-	margin: 3px 1rem;
+	margin: 0.5rem 1rem;
+	display: inline-block;
+	width: 20rem;
 }
 
 .game-state-legend {
