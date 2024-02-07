@@ -86,7 +86,7 @@ function updateSizeSelector(evt) {
 	while(sizeSelector.children.length > 0)
 		sizeSelector.children[0].remove();
 	let option, optionName, totalCells;
-	for(const dims of Mode[modeSelector.value].sizes) {
+	for(let dims of Mode[modeSelector.value].sizes) {
 		option = document.createElement("option");
 		totalCells = 
 			dims[0]*dims[1]*Mode[modeSelector.value].groupType.numCells;
@@ -99,7 +99,20 @@ function updateSizeSelector(evt) {
 
 //  number of bombs selector
 const numBombsInput = document.getElementById("numBombs-Selector");
-numBombsInput.setAttribute("value","9");
+function updateNumBombsInput(evt) {
+	let maxCells = sizeSelector.value
+		.split(",")
+		.map((x)=>parseInt(x))
+		.reduce(
+			(acc,entry) => acc * entry,
+			1
+		)
+		* Mode[modeSelector.value].groupType.numCells;
+	numBombsInput.setAttribute("max",maxCells.toString());
+	// numBombsInput.setAttribute("value",Math.round(maxCells/6).toString());
+	// doesn't work
+}
+sizeSelector.addEventListener("change",updateNumBombsInput);
 
 
 //  new game button 
