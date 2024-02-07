@@ -82,7 +82,10 @@ class RegularCell {
 		
 		this.cellSide = boundSide * (1 - 2*PADDING*Math.sin(Math.PI/numSides));
 		
-		boundShape.setAttribute("points",regularPoly(x,y,angle,numSides,boundSide));
+		boundShape.setAttribute(
+			"points",
+			regularPoly(x,y,angle,numSides,boundSide)
+		);
 		cellShape.setAttribute("points",regularPoly(
 			x + boundSide * PADDING * Math.sin(Math.PI/numSides - angle),
 			y + boundSide * PADDING * Math.cos(Math.PI/numSides - angle),
@@ -113,6 +116,15 @@ class RegularCell {
 		this.isRevealed = false;
 		this.isFlagged = false;
 		
+		// ++++++++++++ the flag ++++++++++++
+		this.flagImage = document.createElementNS(SVGNS,"image");
+		this.flagImage.setAttribute("x",
+			(this.centreX - 0.5*this.radius).toString());
+		this.flagImage.setAttribute("y",
+			(this.centreY - 0.5*this.radius).toString());
+		this.flagImage.setAttribute("width",this.radius.toString());
+		this.flagImage.setAttribute("height",this.radius.toString());
+		this.flagImage.setAttribute("href",FLAG_IMAGE_LOC);
 		
 		// ++++++++++++ add event listeners ++++++++++++
 		this.cellShape.addEventListener("click",
@@ -124,8 +136,12 @@ class RegularCell {
 		);
 		this.cellShape.addEventListener("contextmenu",
 			event => {
-				event.preventDefault();
-				this.toggleFlag();
+				this.toggleFlag(event);
+			}
+		);
+		this.flagImage.addEventListener("contextmenu",
+			event => {
+				this.toggleFlag(event);
 			}
 		);
 		
@@ -142,15 +158,19 @@ class RegularCell {
 		++this.numAdjBombs;
 	}
 	
-	toggleFlag() {
+	toggleFlag(event) {
+		event.preventDefault();
+		if(this.isRevealed) {
+			return;
+		}
 		if(this.isFlagged) {
 			document.dispatchEvent(incBombs);
 			document.dispatchEvent(decNumMapped);
-		}
-		if(this.isFlagged || this.isRevealed) {
+			this.svgcanvas.removeChild(this.flagImage);
 		} else {
 			document.dispatchEvent(decBombs);
 			document.dispatchEvent(incNumMapped);
+			this.svgcanvas.appendChild(this.flagImage);
 		}
 		this.isFlagged = !this.isFlagged;
 	}
