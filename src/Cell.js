@@ -1,13 +1,13 @@
-// ++++++++++++ cell background ++++++++++++
+// cell background 
 const UNREVEALED_COLOUR = "white";
 // 	the padding to be put around each cell
-// (as a fraction of the bounding shape's side length
+// (as a fraction of the bounding shape's side length)
 const PADDING = 0.07;
 const PADDING_COLOUR = "transparent";
 const NO_BOMB_BACKGROUND = "#00ffff";
 const BOMB_OPACITY = "0.2";
 
-// ++++++++++++ the label (showing the # of adjacent bombs) ++++++++++++
+// the label (showing the # of adjacent bombs) 
 const LABEL_COLOURS = [
 	"#00ffff",
 	"#0000ff",
@@ -18,25 +18,14 @@ const LABEL_COLOURS = [
 	"#ff00ff",
 	"#000000"
 ];
-const LABEL_FONT = "Helvetica, Arial";
-const SVGNS = "http://www.w3.org/2000/svg";
+const LABEL_FONT = "Arial";
 // the ratio of the font size to the cell side length
 const FONT_CELL_RATIO = 0.5;
 
-// ++++++++++++ the flag ++++++++++++
-// The side length of the flag (i.e. the triangle part) divided by 
-// twice the distance from the the centre of the cell to one of its sides
-const FLAG_CELL_RATIO = 0.25;
-const POLEHEIGHT_FLAG_RATIO = 3;
-const POLEWIDTH_FLAG_RATIO = 0.15;
-const FLAG_COLOUR = "red";
-const FLAGPOLE_COLOUR = "black";
-
-// ++++++++++++ the raincloud image (i.e. the bomb image) ++++++++++++
+// assets
+const SVGNS = "http://www.w3.org/2000/svg";
 const BOMB_IMAGE_LOC = "./assets/raincloud.svg";
-
-
-
+const FLAG_IMAGE_LOC= "./assets/umbrella-alt.svg";
 
 
 
@@ -118,8 +107,6 @@ class RegularCell {
 			(2 * Math.sin(Math.PI/numSides));
 		this.radius = this.cellSide / Math.tan(Math.PI/numSides);
 		
-		this.createFlag();
-		
 		// ++++++++++++ Cell Properties (to be reset later) ++++++++++++
 		this.isBomb = false;
 		this.numAdjBombs = 0;
@@ -145,38 +132,6 @@ class RegularCell {
 		// ++++++++++++ add this cell to the svg element ++++++++++++
 		svgcanvas.appendChild(boundShape);
 		svgcanvas.appendChild(cellShape);
-		svgcanvas.appendChild(this.flagpole);
-		svgcanvas.appendChild(this.flag);
-	}
-	
-	createFlag() {
-		this.flag = document.createElementNS(SVGNS,"polygon");
-		let flagSide;
-		if(this.numSides == 4)
-			flagSide = FLAG_CELL_RATIO * 0.5*this.cellSide;
-		else
-			flagSide = FLAG_CELL_RATIO * this.cellSide/Math.tan(Math.PI/this.numSides);
-		let poleTopRightX = this.centreX + 0.5*flagSide*POLEWIDTH_FLAG_RATIO;
-		let poleTopRightY = this.centreY - 0.5*flagSide*POLEHEIGHT_FLAG_RATIO;
-		this.flag.setAttribute("points",
-			"".concat(
-			`${poleTopRightX},${poleTopRightY} `,
-			`${poleTopRightX},${poleTopRightY + flagSide} `,
-			`${poleTopRightX + Math.sqrt(0.75)*flagSide},${poleTopRightY + 0.5*flagSide}`
-			)
-		);
-		this.flag.setAttribute("fill","transparent");
-		
-		this.flagpole = document.createElementNS(SVGNS,"rect");
-		this.flagpole.setAttribute("x",
-			(this.centreX - 0.5*flagSide*POLEWIDTH_FLAG_RATIO).toString());
-		this.flagpole.setAttribute("y",
-			(this.centreY - 0.5*flagSide*POLEHEIGHT_FLAG_RATIO).toString());
-		this.flagpole.setAttribute("width",
-			(flagSide*POLEWIDTH_FLAG_RATIO).toString());
-		this.flagpole.setAttribute("height",
-			(flagSide*POLEHEIGHT_FLAG_RATIO).toString());
-		this.flagpole.setAttribute("fill","transparent");
 	}
 	
 	setBomb() {
@@ -193,11 +148,7 @@ class RegularCell {
 			document.dispatchEvent(decNumMapped);
 		}
 		if(this.isFlagged || this.isRevealed) {
-			this.flagpole.setAttribute("fill","transparent");
-			this.flag.setAttribute("fill", "transparent");
 		} else {
-			this.flagpole.setAttribute("fill",FLAGPOLE_COLOUR);
-			this.flag.setAttribute("fill",FLAG_COLOUR);
 			document.dispatchEvent(decBombs);
 			document.dispatchEvent(incNumMapped);
 		}
