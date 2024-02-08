@@ -85,12 +85,12 @@ modeSelector.addEventListener("change",updateSizeSelector);
 function updateSizeSelector(evt) {
 	while(sizeSelector.children.length > 0)
 		sizeSelector.children[0].remove();
-	let option, optionName, totalCells;
+	let option, optionName, numCellsInOption;
 	for(let dims of Mode[modeSelector.value].sizes) {
 		option = document.createElement("option");
-		totalCells = 
+		numCellsInOption = 
 			dims[0]*dims[1]*Mode[modeSelector.value].groupType.numCells;
-		optionName = document.createTextNode(`${totalCells} clouds`);
+		optionName = document.createTextNode(`${numCellsInOption} clouds`);
 		option.setAttribute("value",dims);
 		option.appendChild(optionName);
 		sizeSelector.appendChild(option);
