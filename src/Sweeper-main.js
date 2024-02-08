@@ -158,6 +158,8 @@ document.getElementById("New-Game").addEventListener(
 		totalCells = game.cells.length;
 		numMapped = 0;
 		pcMappedLabel.nodeValue = mappedFormat();
+		numExploded = 0;
+		numExplodedLabel.nodeValue = numExploded.toString();
 		
 		// add the game to the DOM
 		svgcanvas.setAttribute("height",game.height.toString());
