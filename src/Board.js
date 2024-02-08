@@ -112,7 +112,8 @@ class Board {
 		this.numBombs = totalBombs;
 		
 		// dealing with the first click
-		document.addEventListener("click",
+		document.addEventListener(
+			"click",
 			event => {
 				let bombIndices = [];
 				let cellIndices = [...this.cells.keys()];

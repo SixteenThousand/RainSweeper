@@ -91,7 +91,7 @@ function updateSizeSelector(evt) {
 		numCellsInOption = 
 			dims[0]*dims[1]*Mode[modeSelector.value].groupType.numCells;
 		optionName = document.createTextNode(`${numCellsInOption} clouds`);
-		option.setAttribute("value",dims);
+		option.value = dims;
 		option.appendChild(optionName);
 		sizeSelector.appendChild(option);
 	}

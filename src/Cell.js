@@ -86,13 +86,16 @@ class RegularCell {
 			"points",
 			regularPoly(x,y,angle,numSides,boundSide)
 		);
-		cellShape.setAttribute("points",regularPoly(
-			x + boundSide * PADDING * Math.sin(Math.PI/numSides - angle),
-			y + boundSide * PADDING * Math.cos(Math.PI/numSides - angle),
-			angle,
-			numSides,
-			this.cellSide
-		));
+		cellShape.setAttribute(
+			"points",
+			regularPoly(
+				x + boundSide * PADDING * Math.sin(Math.PI/numSides - angle),
+				y + boundSide * PADDING * Math.cos(Math.PI/numSides - angle),
+				angle,
+				numSides,
+				this.cellSide
+			)
+		);
 		boundShape.setAttribute("fill",PADDING_COLOUR);
 		cellShape.setAttribute("fill",UNREVEALED_COLOUR);
 		
@@ -118,28 +121,35 @@ class RegularCell {
 		
 		// ++++++++++++ the flag ++++++++++++
 		this.flagImage = document.createElementNS(SVGNS,"image");
-		this.flagImage.setAttribute("x",
-			(this.centreX - 0.5*this.radius).toString());
-		this.flagImage.setAttribute("y",
-			(this.centreY - 0.5*this.radius).toString());
+		this.flagImage.setAttribute(
+			"x",
+			(this.centreX - 0.5*this.radius).toString()
+		);
+		this.flagImage.setAttribute(
+			"y",
+			(this.centreY - 0.5*this.radius).toString()
+		);
 		this.flagImage.setAttribute("width",this.radius.toString());
 		this.flagImage.setAttribute("height",this.radius.toString());
 		this.flagImage.setAttribute("href",FLAG_IMAGE_LOC);
 		
 		// ++++++++++++ add event listeners ++++++++++++
-		this.cellShape.addEventListener("click",
+		this.cellShape.addEventListener(
+			"click",
 			event => {
 				if(event.button === 0) {
 					this.reveal();
 				}
 			}
 		);
-		this.cellShape.addEventListener("contextmenu",
+		this.cellShape.addEventListener(
+			"contextmenu",
 			event => {
 				this.toggleFlag(event);
 			}
 		);
-		this.flagImage.addEventListener("contextmenu",
+		this.flagImage.addEventListener(
+			"contextmenu",
 			event => {
 				this.toggleFlag(event);
 			}
@@ -186,10 +196,14 @@ class RegularCell {
 			document.dispatchEvent(decBombs);
 			this.cellShape.setAttribute("opacity",BOMB_OPACITY);
 			let bombImage = document.createElementNS(SVGNS,"image");
-			bombImage.setAttribute("x",
-				(this.centreX - 0.5*this.radius).toString());
-			bombImage.setAttribute("y",
-				(this.centreY - 0.5*this.radius).toString());
+			bombImage.setAttribute(
+				"x",
+				(this.centreX - 0.5*this.radius).toString()
+			);
+			bombImage.setAttribute(
+				"y",
+				(this.centreY - 0.5*this.radius).toString()
+			);
 			bombImage.setAttribute("width",this.radius.toString());
 			bombImage.setAttribute("height",this.radius.toString());
 			bombImage.setAttribute("href",BOMB_IMAGE_LOC);
@@ -207,7 +221,10 @@ class RegularCell {
 			label.setAttribute("y",this.centreY.toString());
 			label.setAttribute("text-anchor","middle");
 			label.setAttribute("dominant-baseline","middle");
-			label.setAttribute("font-size",Math.ceil(this.cellSide*FONT_CELL_RATIO).toString());
+			label.setAttribute(
+				"font-size",
+				Math.ceil(this.cellSide*FONT_CELL_RATIO).toString()
+			);
 			label.setAttribute("font-family",LABEL_FONT);
 			let labelText = document.createTextNode(this.numAdjBombs.toString());
 			label.appendChild(labelText);
