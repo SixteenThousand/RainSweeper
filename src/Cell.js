@@ -80,7 +80,9 @@ class RegularCell {
 		let boundShape = document.createElementNS(SVGNS,"polygon");
 		let cellShape = document.createElementNS(SVGNS,"polygon");
 		
-		this.cellSide = boundSide * (1 - 2*PADDING*Math.sin(Math.PI/numSides));
+		this.cellSide = boundSide * (
+			1 - 2*PADDING*Math.sin(Math.PI/numSides)
+		);
 		
 		boundShape.setAttribute(
 			"points",
