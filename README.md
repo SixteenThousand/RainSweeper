@@ -23,4 +23,5 @@ Controls:
 - right-click a cloud to flag it as a raincloud
 - left-click a cloud to reveal whehter it is a raincloud or not
 
-If you do reveal a raincloud, don't worry! The met office is often wrong anyway! Just try to **reveal as few rainclouds as possible**.
+If you do reveal a raincloud, don't worry! The met office is often wrong
+anyway! **Just try to get as few people wet as possible**.

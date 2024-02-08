@@ -33,6 +33,7 @@ const incBombs = new Event("incBombs");
 const decBombs = new Event("decBombs");
 const incNumMapped = new Event("incNumMapped");
 const decNumMapped = new Event("decNumMapped")
+const incNumExploded = new Event("incNumExploded");
 
 
 function regularPoly(x,y,angle,numSides,side) {
@@ -196,6 +197,7 @@ class RegularCell {
 		document.dispatchEvent(incNumMapped);
 		if(this.isBomb) {
 			document.dispatchEvent(decBombs);
+			document.dispatchEvent(incNumExploded);
 			this.cellShape.setAttribute("opacity",BOMB_OPACITY);
 			let bombImage = document.createElementNS(SVGNS,"image");
 			bombImage.setAttribute(

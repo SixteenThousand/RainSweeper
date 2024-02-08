@@ -23,7 +23,8 @@ function mappedFormat() {
 }
 let pcMappedLabel = document.createTextNode(mappedFormat());
 document.getElementById("pcMapped-state").appendChild(pcMappedLabel);
-document.addEventListener("incNumMapped",
+document.addEventListener(
+	"incNumMapped",
 	(evt) => {
 		++numMapped;
 		pcMappedLabel.nodeValue = mappedFormat();
@@ -32,7 +33,8 @@ document.addEventListener("incNumMapped",
 		}
 	}
 );
-document.addEventListener("decNumMapped",
+document.addEventListener(
+	"decNumMapped",
 	(evt) => {
 		--numMapped;
 		pcMappedLabel.nodeValue = mappedFormat();
@@ -53,18 +55,33 @@ function bombsFormat() {
 }
 let numBombsLabel = document.createTextNode(bombsFormat());
 document.getElementById("numBombs-state").appendChild(numBombsLabel);
-document.addEventListener("incBombs",
+document.addEventListener(
+	"incBombs",
 	(evt) => {
 		++numBombs;
 		numBombsLabel.nodeValue = bombsFormat();
 	}
 );
-document.addEventListener("decBombs",
+document.addEventListener(
+	"decBombs",
 	(evt) => {
 		--numBombs;
 		numBombsLabel.nodeValue =  bombsFormat();
 	}
 );
+
+
+// number of exploded bombs indicator
+let numExploded = 0;
+let numExplodedLabel = document.createTextNode(numExploded.toString());
+document.getElementById("numExploded-state").appendChild(numExplodedLabel);
+document.addEventListener(
+	"incNumExploded",
+	(evt) => {
+		++numExploded;
+		numExplodedLabel.nodeValue = numExploded.toString();
+	}
+)
 
 
 
@@ -117,7 +134,8 @@ modeSelector.addEventListener("change",updateNumBombsInput);
 
 //  new game button 
 let svgcanvas, game;
-document.getElementById("New-Game").addEventListener("click",
+document.getElementById("New-Game").addEventListener(
+	"click",
 	(evt) => {
 		// get rid of existing game
 		if(svgcanvas !== undefined)
