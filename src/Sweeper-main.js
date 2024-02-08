@@ -108,11 +108,11 @@ function updateNumBombsInput(evt) {
 			1
 		)
 		* Mode[modeSelector.value].groupType.numCells;
-	numBombsInput.setAttribute("max",maxCells.toString());
-	// numBombsInput.setAttribute("value",Math.round(maxCells/6).toString());
-	// doesn't work
+	numBombsInput.max = maxCells.toString();
+	numBombsInput.value = Math.round(maxCells/6);
 }
 sizeSelector.addEventListener("change",updateNumBombsInput);
+modeSelector.addEventListener("change",updateNumBombsInput);
 
 
 //  new game button 

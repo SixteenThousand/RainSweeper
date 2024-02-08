@@ -1,3 +1,4 @@
+/* site-wide stuff */
 * {
 	--popup-bg: rgba(255,255,255,0.4);
 	--data-bg: rgba(0,0,0,0.8);
@@ -5,26 +6,27 @@
 	--legend-bg: white;
 	--legend-text: black;
 }
-
 body {
 	background-image: url("./Background.jpg");
 	background-size: cover;
 	color: black;
-	font-family: Arial;
+	font-family: Arial,Helvetica;
 	font-weight: bold;
 }
 
+
+/* title/top bar stuff */
 header {
 	background-color: var(--popup-bg);
 	padding: 1rem 5px;
 }
-
 #page-title {
 	text-align: center;
 	font-size: 4rem;
 }
 
-/* new game form styling */
+
+/* new game form */
 select,
 input,
 button {
@@ -35,32 +37,27 @@ button {
 	color: var(--data-text);
 	font-weight: bold;
 }
-
 .form-legend {
 	background: var(--legend-bg);
 	color: var(--legend-text);
 	margin: 0 -2px;
 	padding: 2px 3px;
 }
-
-/* new game menu */
 #new-game-form {
 	padding: 1rem;
 }
-
 #new-game-form > span {
 	padding: 0 0.3rem;
 	margin: 0.3rem 0.5rem;
 	display: inline-block;
 }
-
 #numBombs-Selector {
 	width: 3rem;
 }
-
 #size-Selector {
 	width: 6rem;
 }
+
 
 /* indicators */
 #current-game-state {
@@ -69,9 +66,8 @@ button {
 .data-and-legend {
 	margin: 0.5rem 1rem;
 	display: inline-block;
-	width: 20rem;
+	width: 25rem;
 }
-
 .game-state-legend {
 	background: var(--legend-bg);
 	color: var(--legend-text);
@@ -85,16 +81,15 @@ button {
 }
 
 
+/* "how to play" div */
 #instructions {
 	background: var(--popup-bg);
 	padding: 5px;
 }
-
 #instructions-exit {
 	display: flex;
 	justify-content: center;
 }
-
 #instructions-exit > button {
 	font-size: 1.2rem;
 }
